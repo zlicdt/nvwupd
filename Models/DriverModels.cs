@@ -67,6 +67,16 @@ public class DriverInfo
     public string? ReleaseNotes { get; init; }
 
     /// <summary>
+    /// NVIDIA driver ID (used for driver details page).
+    /// </summary>
+    public string? DriverId { get; init; }
+
+    /// <summary>
+    /// Driver type name (e.g., "GeForce Game Ready Driver").
+    /// </summary>
+    public string? DriverTypeName { get; init; }
+
+    /// <summary>
     /// Supported driver types.
     /// </summary>
     public DriverType[] SupportedTypes { get; init; } = [DriverType.GameReady];

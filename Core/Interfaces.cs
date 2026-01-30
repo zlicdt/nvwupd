@@ -20,11 +20,19 @@ public interface IGpuDetector
 public interface IDriverFetcher
 {
     /// <summary>
-    /// Gets the latest driver information for the specified GPU.
+    /// Gets the latest driver information for the specified GPU (default: Game Ready).
     /// </summary>
     /// <param name="gpuInfo">GPU information.</param>
     /// <returns>Latest driver information.</returns>
     Task<DriverInfo?> GetLatestDriverAsync(GpuInfo gpuInfo);
+
+    /// <summary>
+    /// Gets the latest driver information for the specified GPU and driver type.
+    /// </summary>
+    /// <param name="gpuInfo">GPU information.</param>
+    /// <param name="driverType">Type of driver (Game Ready or Studio).</param>
+    /// <returns>Latest driver information.</returns>
+    Task<DriverInfo?> GetLatestDriverAsync(GpuInfo gpuInfo, DriverType driverType);
 }
 
 /// <summary>
