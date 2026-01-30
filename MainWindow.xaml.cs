@@ -40,21 +40,28 @@ public sealed partial class MainWindow : Window
     {
         try
         {
+            Console.WriteLine("[MainWindow] Detecting GPU...");
             _gpuInfo = await _gpuDetector.DetectGpuAsync();
             
             if (_gpuInfo != null)
             {
+                Console.WriteLine($"[MainWindow] GPU detected: {_gpuInfo.Name}");
+                Console.WriteLine($"[MainWindow] Driver version: {_gpuInfo.DriverVersion}");
+                Console.WriteLine($"[MainWindow] Is Notebook: {_gpuInfo.IsNotebook}");
+                
                 GpuNameText.Text = _gpuInfo.Name;
                 CurrentVersionText.Text = _gpuInfo.DriverVersion;
                 StatusText.Text = "GPU 信息已加载";
             }
             else
             {
+                Console.WriteLine("[MainWindow] No NVIDIA GPU detected");
                 StatusText.Text = "未检测到 NVIDIA GPU";
             }
         }
         catch (Exception ex)
         {
+            Console.WriteLine($"[MainWindow] Detection failed: {ex.Message}");
             StatusText.Text = $"检测失败: {ex.Message}";
         }
     }
@@ -65,6 +72,7 @@ public sealed partial class MainWindow : Window
 
         CheckUpdateButton.IsEnabled = false;
         StatusText.Text = "正在检查更新...";
+        Console.WriteLine("[MainWindow] Checking for updates...");
 
         try
         {
@@ -72,6 +80,11 @@ public sealed partial class MainWindow : Window
 
             if (_latestDriver != null)
             {
+                Console.WriteLine($"[MainWindow] Latest driver found:");
+                Console.WriteLine($"  Version: {_latestDriver.Version}");
+                Console.WriteLine($"  Release Date: {_latestDriver.ReleaseDate}");
+                Console.WriteLine($"  Download URL: {_latestDriver.DownloadUrl}");
+                
                 LatestVersionText.Text = _latestDriver.Version;
                 ReleaseDateText.Text = _latestDriver.ReleaseDate.ToString("yyyy-MM-dd");
 
@@ -80,21 +93,25 @@ public sealed partial class MainWindow : Window
                     UpdateCard.Visibility = Visibility.Visible;
                     UpdateButton.IsEnabled = true;
                     StatusText.Text = "发现新版本驱动！";
+                    Console.WriteLine($"[MainWindow] Update available: {_gpuInfo.DriverVersion} -> {_latestDriver.Version}");
                 }
                 else
                 {
                     StatusText.Text = "当前已是最新版本";
                     UpdateCard.Visibility = Visibility.Collapsed;
+                    Console.WriteLine("[MainWindow] Already up to date");
                 }
             }
             else
             {
                 StatusText.Text = "无法获取最新驱动信息";
+                Console.WriteLine("[MainWindow] Failed to get driver info (null response)");
             }
         }
         catch (Exception ex)
         {
             StatusText.Text = $"检查更新失败: {ex.Message}";
+            Console.WriteLine($"[MainWindow] Check update failed: {ex.Message}");
         }
         finally
         {
@@ -113,19 +130,28 @@ public sealed partial class MainWindow : Window
             ? DriverType.GameReady 
             : DriverType.Studio;
 
+        Console.WriteLine($"[MainWindow] Starting update, driver type: {driverType}");
+        Console.WriteLine($"[MainWindow] Download URL: {_latestDriver.DownloadUrl}");
+
         try
         {
             StatusText.Text = "正在下载驱动...";
+            Console.WriteLine("[MainWindow] Downloading driver...");
             var downloadPath = await _driverDownloader.DownloadDriverAsync(_latestDriver, driverType);
+            Console.WriteLine($"[MainWindow] Downloaded to: {downloadPath}");
 
             StatusText.Text = "正在安装驱动...";
+            Console.WriteLine("[MainWindow] Installing driver...");
             await _driverInstaller.InstallDriverAsync(downloadPath);
 
             StatusText.Text = "驱动安装完成！建议重启计算机。";
+            Console.WriteLine("[MainWindow] Installation complete!");
         }
         catch (Exception ex)
         {
             StatusText.Text = $"更新失败: {ex.Message}";
+            Console.WriteLine($"[MainWindow] Update failed: {ex.Message}");
+            Console.WriteLine($"[MainWindow] Stack trace: {ex.StackTrace}");
         }
         finally
         {

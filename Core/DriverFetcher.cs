@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using NvwUpd.Models;
 
@@ -29,19 +30,43 @@ public class DriverFetcher : IDriverFetcher
             var queryParams = BuildQueryParams(gpuInfo);
             var requestUrl = $"{DriverLookupUrl}?{queryParams}";
 
-            var response = await _httpClient.GetFromJsonAsync<NvidiaDriverResponse>(requestUrl);
+            System.Diagnostics.Debug.WriteLine($"Fetching driver info from: {requestUrl}");
+
+            var jsonString = await _httpClient.GetStringAsync(requestUrl);
+            System.Diagnostics.Debug.WriteLine($"API Response (first 500 chars): {jsonString[..Math.Min(500, jsonString.Length)]}");
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            var response = JsonSerializer.Deserialize<NvidiaDriverResponse>(jsonString, options);
 
             if (response?.IDS?.Count > 0)
             {
                 var driver = response.IDS[0];
+                var downloadInfo = driver.DownloadInfo;
                 
+                if (downloadInfo == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("downloadInfo is null");
+                    return null;
+                }
+
+                // Get download URL from nested downloadInfo
+                var downloadUrl = downloadInfo.DownloadURL ?? string.Empty;
+                var version = downloadInfo.Version ?? "Unknown";
+                var releaseDate = downloadInfo.ReleaseDateTime;
+                var fileSize = downloadInfo.DownloadURLFileSize;
+
+                System.Diagnostics.Debug.WriteLine($"Found driver version: {version}, URL: {downloadUrl}");
+
                 return new DriverInfo
                 {
-                    Version = driver.Version ?? "Unknown",
-                    DownloadUrl = driver.DownloadUrl ?? string.Empty,
-                    ReleaseDate = ParseReleaseDate(driver.ReleaseDate),
-                    FileSize = ParseFileSize(driver.DownloadFileSize),
-                    ReleaseNotes = driver.ReleaseNotes,
+                    Version = version,
+                    DownloadUrl = downloadUrl,
+                    ReleaseDate = ParseReleaseDate(releaseDate),
+                    FileSize = ParseFileSize(fileSize),
+                    ReleaseNotes = downloadInfo.ReleaseNotes,
                     SupportedTypes = [DriverType.GameReady, DriverType.Studio]
                 };
             }
@@ -49,6 +74,7 @@ public class DriverFetcher : IDriverFetcher
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Driver fetch failed: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
         }
 
         return null;
@@ -58,8 +84,7 @@ public class DriverFetcher : IDriverFetcher
     {
         // Determine parameters based on GPU info
         var osId = Environment.Is64BitOperatingSystem ? "57" : "56"; // Windows 10/11 64-bit or 32-bit
-        var langId = "1"; // English
-        var isNotebook = gpuInfo.IsNotebook ? "1" : "0";
+        var langId = "1033"; // English (US) - MUST be 1033, not 1
         
         // Get product series and type IDs
         var (psid, pfid) = GetProductIds(gpuInfo);
@@ -72,7 +97,7 @@ public class DriverFetcher : IDriverFetcher
             $"osID={osId}",
             $"languageCode={langId}",
             "isWHQL=1",
-            $"dch=1", // DCH driver
+            "dch=1", // DCH driver
             "sort1=0",
             "numberOfResults=1"
         };
@@ -85,18 +110,38 @@ public class DriverFetcher : IDriverFetcher
     /// </summary>
     private static (string psid, string pfid) GetProductIds(GpuInfo gpuInfo)
     {
-        // This is a simplified mapping - in production, you'd have a more complete database
-        // or parse the GPU name more thoroughly
-        
         var name = gpuInfo.Name.ToUpperInvariant();
+        var isNotebook = name.Contains("LAPTOP") || name.Contains("NOTEBOOK") || 
+                         name.Contains("MOBILE") || name.Contains("MAX-Q") ||
+                         gpuInfo.IsNotebook;
 
-        // RTX 50 Series
+        Console.WriteLine($"[DriverFetcher] GPU Name: {gpuInfo.Name}, IsNotebook: {isNotebook}");
+
+        // RTX 40 Series Notebooks (psid=130)
+        if (isNotebook)
+        {
+            if (name.Contains("RTX 4090")) return ("130", "1000");
+            if (name.Contains("RTX 4080")) return ("130", "1001");
+            if (name.Contains("RTX 4070")) return ("130", "1002");
+            if (name.Contains("RTX 4060")) return ("130", "1003");
+            if (name.Contains("RTX 4050")) return ("130", "1004");
+            // RTX 30 Series Notebooks
+            if (name.Contains("RTX 3080 TI")) return ("128", "948");
+            if (name.Contains("RTX 3080")) return ("128", "909");
+            if (name.Contains("RTX 3070 TI")) return ("128", "949");
+            if (name.Contains("RTX 3070")) return ("128", "910");
+            if (name.Contains("RTX 3060")) return ("128", "911");
+            if (name.Contains("RTX 3050 TI")) return ("128", "927");
+            if (name.Contains("RTX 3050")) return ("128", "928");
+        }
+
+        // RTX 50 Series Desktop
         if (name.Contains("RTX 5090")) return ("141", "1031");
         if (name.Contains("RTX 5080")) return ("141", "1032");
         if (name.Contains("RTX 5070 TI")) return ("141", "1033");
         if (name.Contains("RTX 5070")) return ("141", "1034");
 
-        // RTX 40 Series
+        // RTX 40 Series Desktop
         if (name.Contains("RTX 4090")) return ("129", "987");
         if (name.Contains("RTX 4080 SUPER")) return ("129", "1008");
         if (name.Contains("RTX 4080")) return ("129", "988");
@@ -107,7 +152,7 @@ public class DriverFetcher : IDriverFetcher
         if (name.Contains("RTX 4060 TI")) return ("129", "991");
         if (name.Contains("RTX 4060")) return ("129", "992");
 
-        // RTX 30 Series
+        // RTX 30 Series Desktop
         if (name.Contains("RTX 3090 TI")) return ("127", "947");
         if (name.Contains("RTX 3090")) return ("127", "895");
         if (name.Contains("RTX 3080 TI")) return ("127", "939");
@@ -117,7 +162,8 @@ public class DriverFetcher : IDriverFetcher
         if (name.Contains("RTX 3060 TI")) return ("127", "919");
         if (name.Contains("RTX 3060")) return ("127", "920");
 
-        // Default to RTX 40 series
+        // Default
+        Console.WriteLine($"[DriverFetcher] WARNING: Unknown GPU, using default RTX 4080");
         return ("129", "988");
     }
 
@@ -157,7 +203,7 @@ public class DriverFetcher : IDriverFetcher
 internal class NvidiaDriverResponse
 {
     [JsonPropertyName("Success")]
-    public int Success { get; set; }
+    public string? Success { get; set; }
 
     [JsonPropertyName("IDS")]
     public List<NvidiaDriverInfo>? IDS { get; set; }
@@ -167,27 +213,33 @@ internal class NvidiaDriverInfo
 {
     [JsonPropertyName("downloadInfo")]
     public DownloadInfo? DownloadInfo { get; set; }
+}
+
+internal class DownloadInfo
+{
+    [JsonPropertyName("Success")]
+    public string? Success { get; set; }
+
+    [JsonPropertyName("ID")]
+    public string? ID { get; set; }
 
     [JsonPropertyName("Version")]
     public string? Version { get; set; }
 
     [JsonPropertyName("DownloadURL")]
-    public string? DownloadUrl { get; set; }
+    public string? DownloadURL { get; set; }
 
     [JsonPropertyName("ReleaseDateTime")]
-    public string? ReleaseDate { get; set; }
+    public string? ReleaseDateTime { get; set; }
 
-    [JsonPropertyName("DownloadFileSize")]
-    public string? DownloadFileSize { get; set; }
+    [JsonPropertyName("DownloadURLFileSize")]
+    public string? DownloadURLFileSize { get; set; }
 
     [JsonPropertyName("ReleaseNotes")]
     public string? ReleaseNotes { get; set; }
-}
 
-internal class DownloadInfo
-{
-    [JsonPropertyName("DownloadURL")]
-    public string? DownloadUrl { get; set; }
+    [JsonPropertyName("Name")]
+    public string? Name { get; set; }
 }
 
 #endregion
