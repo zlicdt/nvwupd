@@ -7,6 +7,7 @@ namespace NvwUpd.Core;
 /// <summary>
 /// Fetches latest driver information from NVIDIA's official API.
 /// Uses the same API endpoints as nvidia.com/Download
+/// All product IDs are dynamically fetched from NVIDIA API.
 /// </summary>
 public class DriverFetcher : IDriverFetcher
 {
@@ -20,6 +21,11 @@ public class DriverFetcher : IDriverFetcher
     // Driver type constants: dtcid=1 for Game Ready, dtcid=0 for Studio
     private const int GameReadyDriverType = 1;
     private const int StudioDriverType = 0;
+
+    // Cache for API responses to avoid repeated calls
+    private XDocument? _productSeriesCache;
+    private XDocument? _productListCache;
+    private XDocument? _osListCache;
 
     public DriverFetcher()
     {
@@ -38,8 +44,14 @@ public class DriverFetcher : IDriverFetcher
         {
             Console.WriteLine($"[DriverFetcher] Looking up driver for: {gpuInfo.Name}");
 
-            // Step 1: Get product IDs from NVIDIA API (or use cached mapping)
+            // Step 1: Get product IDs from NVIDIA API
             var (psid, pfid) = await GetProductIdsAsync(gpuInfo);
+            if (string.IsNullOrEmpty(psid) || string.IsNullOrEmpty(pfid))
+            {
+                Console.WriteLine("[DriverFetcher] Failed to get product IDs from API");
+                return null;
+            }
+
             var osid = await GetOsIdAsync();
             
             Console.WriteLine($"[DriverFetcher] Product IDs - psid: {psid}, pfid: {pfid}, osid: {osid}");
@@ -76,18 +88,21 @@ public class DriverFetcher : IDriverFetcher
     }
 
     /// <summary>
-    /// Get OS ID for Windows 11 (or 10)
+    /// Get OS ID from NVIDIA API
     /// </summary>
     private async Task<string> GetOsIdAsync()
     {
         try
         {
-            // TypeID=4 returns OS list
-            var xml = await _httpClient.GetStringAsync($"{LookupValueSearchUrl}?TypeID=4");
-            var doc = XDocument.Parse(xml);
+            // Use cache if available
+            if (_osListCache == null)
+            {
+                var xml = await _httpClient.GetStringAsync($"{LookupValueSearchUrl}?TypeID=4");
+                _osListCache = XDocument.Parse(xml);
+            }
             
             // Look for Windows 11
-            var win11 = doc.Descendants("LookupValue")
+            var win11 = _osListCache.Descendants("LookupValue")
                 .FirstOrDefault(x => x.Element("Name")?.Value?.Contains("Windows 11") == true);
             
             if (win11 != null)
@@ -109,7 +124,7 @@ public class DriverFetcher : IDriverFetcher
     /// <summary>
     /// Get product series ID (psid) and product family ID (pfid) from NVIDIA API
     /// </summary>
-    private async Task<(string psid, string pfid)> GetProductIdsAsync(GpuInfo gpuInfo)
+    private async Task<(string? psid, string? pfid)> GetProductIdsAsync(GpuInfo gpuInfo)
     {
         var name = gpuInfo.Name;
         var isNotebook = IsNotebookGpu(name) || gpuInfo.IsNotebook;
@@ -118,44 +133,59 @@ public class DriverFetcher : IDriverFetcher
 
         try
         {
-            // Step 1: Get product series (psid) - TypeID=2
-            var psid = await FindProductSeriesAsync(name, isNotebook);
-            if (string.IsNullOrEmpty(psid))
+            // Load and cache product series list
+            if (_productSeriesCache == null)
             {
-                Console.WriteLine("[DriverFetcher] Could not find product series, using defaults");
-                return GetDefaultProductIds(name, isNotebook);
+                Console.WriteLine("[DriverFetcher] Fetching product series list from API...");
+                var xml = await _httpClient.GetStringAsync($"{LookupValueSearchUrl}?TypeID=2");
+                _productSeriesCache = XDocument.Parse(xml);
             }
 
-            // Step 2: Get product family (pfid) - TypeID=3
-            var pfid = await FindProductIdAsync(name, isNotebook);
+            // Load and cache product list
+            if (_productListCache == null)
+            {
+                Console.WriteLine("[DriverFetcher] Fetching product list from API...");
+                var xml = await _httpClient.GetStringAsync($"{LookupValueSearchUrl}?TypeID=3");
+                _productListCache = XDocument.Parse(xml);
+            }
+
+            // Step 1: Find product series (psid)
+            var psid = FindProductSeries(name, isNotebook);
+            if (string.IsNullOrEmpty(psid))
+            {
+                Console.WriteLine("[DriverFetcher] Could not find product series");
+                return (null, null);
+            }
+
+            // Step 2: Find product ID (pfid)
+            var pfid = FindProductId(name);
             if (string.IsNullOrEmpty(pfid))
             {
-                Console.WriteLine("[DriverFetcher] Could not find product ID, using defaults");
-                return GetDefaultProductIds(name, isNotebook);
+                Console.WriteLine("[DriverFetcher] Could not find product ID");
+                return (null, null);
             }
 
             return (psid, pfid);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[DriverFetcher] API lookup failed: {ex.Message}, using defaults");
-            return GetDefaultProductIds(name, isNotebook);
+            Console.WriteLine($"[DriverFetcher] API lookup failed: {ex.Message}");
+            return (null, null);
         }
     }
 
     /// <summary>
-    /// Find product series ID from NVIDIA API
+    /// Find product series ID from cached data
     /// </summary>
-    private async Task<string?> FindProductSeriesAsync(string gpuName, bool isNotebook)
+    private string? FindProductSeries(string gpuName, bool isNotebook)
     {
-        var xml = await _httpClient.GetStringAsync($"{LookupValueSearchUrl}?TypeID=2");
-        var doc = XDocument.Parse(xml);
-        
+        if (_productSeriesCache == null) return null;
+
         // Build search pattern based on GPU name
         var searchPattern = BuildSeriesSearchPattern(gpuName, isNotebook);
-        Console.WriteLine($"[DriverFetcher] Searching for series: {searchPattern}");
+        Console.WriteLine($"[DriverFetcher] Searching for series matching: {searchPattern}");
         
-        var series = doc.Descendants("LookupValue")
+        var series = _productSeriesCache.Descendants("LookupValue")
             .Where(x => 
             {
                 var seriesName = x.Element("Name")?.Value ?? "";
@@ -172,17 +202,17 @@ public class DriverFetcher : IDriverFetcher
             return value;
         }
         
+        Console.WriteLine("[DriverFetcher] No matching series found");
         return null;
     }
 
     /// <summary>
-    /// Find product ID (pfid) from NVIDIA API
+    /// Find product ID (pfid) from cached data
     /// </summary>
-    private async Task<string?> FindProductIdAsync(string gpuName, bool isNotebook)
+    private string? FindProductId(string gpuName)
     {
-        var xml = await _httpClient.GetStringAsync($"{LookupValueSearchUrl}?TypeID=3");
-        var doc = XDocument.Parse(xml);
-        
+        if (_productListCache == null) return null;
+
         // Clean up GPU name for matching
         var cleanName = gpuName
             .Replace("NVIDIA ", "")
@@ -192,7 +222,7 @@ public class DriverFetcher : IDriverFetcher
         Console.WriteLine($"[DriverFetcher] Searching for product: {cleanName}");
         
         // Try exact match first
-        var product = doc.Descendants("LookupValue")
+        var product = _productListCache.Descendants("LookupValue")
             .FirstOrDefault(x => 
             {
                 var productName = x.Element("Name")?.Value ?? "";
@@ -204,7 +234,8 @@ public class DriverFetcher : IDriverFetcher
         // Try partial match if exact match fails
         if (product == null)
         {
-            product = doc.Descendants("LookupValue")
+            // For laptop GPUs, try matching with "Laptop GPU" suffix
+            product = _productListCache.Descendants("LookupValue")
                 .FirstOrDefault(x => 
                 {
                     var productName = x.Element("Name")?.Value ?? "";
@@ -220,6 +251,7 @@ public class DriverFetcher : IDriverFetcher
             return value;
         }
         
+        Console.WriteLine("[DriverFetcher] No matching product found");
         return null;
     }
 
@@ -229,15 +261,18 @@ public class DriverFetcher : IDriverFetcher
     private static string BuildSeriesSearchPattern(string gpuName, bool isNotebook)
     {
         var name = gpuName.ToUpperInvariant();
-        var notebookSuffix = isNotebook ? ".*Notebook" : "";
+        var notebookSuffix = isNotebook ? @".*\(Notebook" : @"(?!.*Notebook)";
         
-        if (name.Contains("RTX 50")) return $"RTX\\s*50.*{notebookSuffix}";
-        if (name.Contains("RTX 40")) return $"RTX\\s*40.*{notebookSuffix}";
-        if (name.Contains("RTX 30")) return $"RTX\\s*30.*{notebookSuffix}";
-        if (name.Contains("RTX 20")) return $"RTX\\s*20.*{notebookSuffix}";
-        if (name.Contains("GTX 16")) return $"GTX\\s*16.*{notebookSuffix}";
-        if (name.Contains("GTX 10")) return $"GTX\\s*10.*{notebookSuffix}";
+        // Extract GPU generation (e.g., RTX 40, RTX 30, GTX 16)
+        var match = Regex.Match(name, @"(RTX|GTX)\s*(\d{2})");
+        if (match.Success)
+        {
+            var prefix = match.Groups[1].Value; // RTX or GTX
+            var gen = match.Groups[2].Value;    // 40, 30, 16, etc.
+            return $"{prefix}\\s*{gen}.*{notebookSuffix}";
+        }
         
+        // Fallback for other GeForce cards
         return $"GeForce.*{notebookSuffix}";
     }
 
@@ -317,49 +352,6 @@ public class DriverFetcher : IDriverFetcher
                name.Contains("NOTEBOOK") || 
                name.Contains("MOBILE") || 
                name.Contains("MAX-Q");
-    }
-
-    /// <summary>
-    /// Get default product IDs based on GPU name (fallback)
-    /// </summary>
-    private static (string psid, string pfid) GetDefaultProductIds(string gpuName, bool isNotebook)
-    {
-        var name = gpuName.ToUpperInvariant();
-
-        // RTX 40 Series Notebooks
-        if (isNotebook)
-        {
-            if (name.Contains("RTX 4090")) return ("129", "1000");
-            if (name.Contains("RTX 4080")) return ("129", "1001");
-            if (name.Contains("RTX 4070")) return ("129", "1002");
-            if (name.Contains("RTX 4060")) return ("129", "1007");
-            if (name.Contains("RTX 4050")) return ("129", "1004");
-            // RTX 30 Series Notebooks
-            if (name.Contains("RTX 3080")) return ("128", "909");
-            if (name.Contains("RTX 3070")) return ("128", "910");
-            if (name.Contains("RTX 3060")) return ("128", "911");
-            if (name.Contains("RTX 3050")) return ("128", "928");
-        }
-
-        // RTX 50 Series Desktop
-        if (name.Contains("RTX 5090")) return ("141", "1031");
-        if (name.Contains("RTX 5080")) return ("141", "1032");
-        if (name.Contains("RTX 5070")) return ("141", "1034");
-
-        // RTX 40 Series Desktop
-        if (name.Contains("RTX 4090")) return ("129", "987");
-        if (name.Contains("RTX 4080")) return ("129", "988");
-        if (name.Contains("RTX 4070")) return ("129", "990");
-        if (name.Contains("RTX 4060")) return ("129", "992");
-
-        // RTX 30 Series Desktop
-        if (name.Contains("RTX 3090")) return ("127", "895");
-        if (name.Contains("RTX 3080")) return ("127", "896");
-        if (name.Contains("RTX 3070")) return ("127", "897");
-        if (name.Contains("RTX 3060")) return ("127", "920");
-
-        // Default fallback
-        return ("129", "988");
     }
 
     private static DateTime ParseReleaseDate(string? dateStr)
