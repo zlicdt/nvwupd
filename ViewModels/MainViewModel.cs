@@ -31,6 +31,12 @@ public partial class MainViewModel : ViewModelBase
     private double _downloadProgress;
 
     [ObservableProperty]
+    private bool _isDownloading;
+
+    [ObservableProperty]
+    private string _downloadPath = string.Empty;
+
+    [ObservableProperty]
     private string _statusMessage = "正在初始化...";
 
     public MainViewModel(
@@ -117,7 +123,10 @@ public partial class MainViewModel : ViewModelBase
         if (LatestDriver == null) return;
 
         IsLoading = true;
+        IsDownloading = true;
         DownloadProgress = 0;
+        DownloadPath = Path.Combine(Path.GetTempPath(), "NvwUpd", "Downloads", 
+            $"NVIDIA-Driver-{LatestDriver.Version}-{SelectedDriverType}.exe");
 
         try
         {
@@ -133,6 +142,8 @@ public partial class MainViewModel : ViewModelBase
                 LatestDriver, 
                 SelectedDriverType, 
                 progress);
+            
+            DownloadPath = installerPath;
 
             StatusMessage = "正在安装驱动...";
             await _driverInstaller.InstallDriverAsync(installerPath);
@@ -152,6 +163,7 @@ public partial class MainViewModel : ViewModelBase
         finally
         {
             IsLoading = false;
+            IsDownloading = false;
         }
     }
 

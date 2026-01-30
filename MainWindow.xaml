@@ -141,6 +141,32 @@
                             </StackPanel>
                         </RadioButton>
                     </controls:RadioButtons>
+
+                    <!-- Download Progress Section -->
+                    <StackPanel x:Name="DownloadProgressPanel" Spacing="8" 
+                                Margin="0,12,0,0" Visibility="Collapsed">
+                        <TextBlock Text="下载进度" 
+                                   Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                        <ProgressBar x:Name="DownloadProgressBar" 
+                                     Minimum="0" Maximum="100" Value="0"
+                                     Height="8" CornerRadius="4"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="DownloadPercentText" Text="0%"
+                                       Style="{StaticResource CaptionTextBlockStyle}"
+                                       Foreground="{ThemeResource AccentFillColorDefaultBrush}"
+                                       FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="1" x:Name="DownloadPathText" 
+                                       Text="" TextTrimming="CharacterEllipsis"
+                                       HorizontalAlignment="Right"
+                                       Style="{StaticResource CaptionTextBlockStyle}"
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                       ToolTipService.ToolTip="{Binding Text, ElementName=DownloadPathText}"/>
+                        </Grid>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 

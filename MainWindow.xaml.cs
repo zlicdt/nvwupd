@@ -133,12 +133,34 @@ public sealed partial class MainWindow : Window
         Console.WriteLine($"[MainWindow] Starting update, driver type: {driverType}");
         Console.WriteLine($"[MainWindow] Download URL: {_latestDriver.DownloadUrl}");
 
+        // Show download progress panel
+        DownloadProgressPanel.Visibility = Visibility.Visible;
+        DownloadProgressBar.Value = 0;
+        DownloadPercentText.Text = "0%";
+        
+        // Show expected download path
+        var expectedPath = System.IO.Path.Combine(
+            System.IO.Path.GetTempPath(), "NvwUpd", "Downloads", 
+            $"NVIDIA-Driver-{_latestDriver.Version}-{driverType}.exe");
+        DownloadPathText.Text = expectedPath;
+
         try
         {
             StatusText.Text = "正在下载驱动...";
             Console.WriteLine("[MainWindow] Downloading driver...");
-            var downloadPath = await _driverDownloader.DownloadDriverAsync(_latestDriver, driverType);
+            
+            var progress = new Progress<double>(p =>
+            {
+                DownloadProgressBar.Value = p * 100;
+                DownloadPercentText.Text = $"{p:P0}";
+                StatusText.Text = $"正在下载... {p:P0}";
+            });
+            
+            var downloadPath = await _driverDownloader.DownloadDriverAsync(_latestDriver, driverType, progress);
             Console.WriteLine($"[MainWindow] Downloaded to: {downloadPath}");
+            
+            // Update path to actual downloaded location
+            DownloadPathText.Text = downloadPath;
 
             StatusText.Text = "正在安装驱动...";
             Console.WriteLine("[MainWindow] Installing driver...");
