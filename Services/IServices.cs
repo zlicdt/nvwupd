@@ -66,6 +66,17 @@ public interface ISettingsService
 }
 
 /// <summary>
+/// Interface for tray icon service.
+/// </summary>
+public interface ITrayIconService
+{
+    /// <summary>
+    /// Initializes tray icon and context menu.
+    /// </summary>
+    void Initialize();
+}
+
+/// <summary>
 /// Event args for when an update is found.
 /// </summary>
 public class UpdateFoundEventArgs : EventArgs

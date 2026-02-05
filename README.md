@@ -98,7 +98,7 @@ NvwUpd/
 - [ ] Run as a background service
 - [ ] Autostart during boot
 - [x] Periodic Update Checks
-- [ ] Windows Notifications
+- [x] Windows Notifications
 - [ ] Test on out-of-date cards
 - [ ] Setup executable
 - [ ] Localization
