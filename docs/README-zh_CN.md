@@ -29,7 +29,7 @@
 
 ### 从 Release 安装
 
-1. 从 [Releases](https://github.com/yourusername/nvwupd/releases) 下载最新版本
+1. 从 [Releases](https://github.com/zlicdt/nvwupd/releases) 下载最新版本
 2. 解压压缩包
 3. 运行 `NvwUpd.exe`
 
@@ -37,7 +37,7 @@
 
 ```powershell
 # 克隆仓库
-git clone https://github.com/yourusername/nvwupd.git
+git clone https://github.com/zlicdt/nvwupd.git
 cd nvwupd
 
 # 构建项目
