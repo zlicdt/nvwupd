@@ -41,7 +41,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Spacing="8">
-                    <TextBlock Text="🎮 NVIDIA 驱动更新工具" 
+                    <TextBlock Text="NVIDIA 驱动更新工具" 
                                Style="{StaticResource TitleTextBlockStyle}"/>
                     <TextBlock x:Name="StatusText" 
                                Text="正在检测 GPU 信息..." 
