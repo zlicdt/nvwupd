@@ -1,7 +1,9 @@
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Windowing;
 using Microsoft.Extensions.DependencyInjection;
 using NvwUpd.Core;
 using NvwUpd.Models;
+using Windows.Graphics;
 
 namespace NvwUpd;
 
@@ -29,6 +31,10 @@ public sealed partial class MainWindow : Window
         // Set custom title bar
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);
+
+        // Set window size (compact but sufficient)
+        var appWindow = AppWindow;
+        appWindow.Resize(new SizeInt32(800, 600));
 
         // Get services
         _gpuDetector = App.Services.GetRequiredService<IGpuDetector>();
