@@ -80,9 +80,19 @@ public partial class App : Application
         {
             app._window = new MainWindow();
         }
+        var window = app._window;
+        var dispatcher = window.DispatcherQueue;
+        if (dispatcher != null && dispatcher.TryEnqueue(() =>
+            {
+                window.AppWindow.Show();
+                window.Activate();
+            }))
+        {
+            return;
+        }
 
-        app._window.AppWindow.Show();
-        app._window.Activate();
+        window.AppWindow.Show();
+        window.Activate();
     }
 
     private static bool IsBackgroundLaunch(string? arguments)

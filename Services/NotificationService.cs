@@ -42,6 +42,7 @@ public class NotificationService : INotificationService, IDisposable
         try
         {
             var builder = new AppNotificationBuilder()
+                .AddArgument("action", "viewUpdate")
                 .AddText("🎮 NVIDIA 驱动更新可用")
                 .AddText($"发现新版本 {driverInfo.Version}")
                 .AddText($"当前版本: {currentVersion}")
@@ -83,22 +84,18 @@ public class NotificationService : INotificationService, IDisposable
         // Handle notification actions
         if (args.Arguments.TryGetValue("action", out var action))
         {
-            switch (action)
+            if (string.Equals(action, "dismiss", StringComparison.OrdinalIgnoreCase))
             {
-                case "viewUpdate":
-                    // Bring main window to foreground
-                    App.ShowMainWindow();
-                    if (App.MainWindow != null)
-                    {
-                        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
-                        SetForegroundWindow(hwnd);
-                    }
-                    break;
-
-                case "dismiss":
-                    // Do nothing, just dismiss
-                    break;
+                return;
             }
+        }
+
+        // Default behavior: bring main window to foreground
+        App.ShowMainWindow();
+        if (App.MainWindow != null)
+        {
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+            SetForegroundWindow(hwnd);
         }
     }
 
