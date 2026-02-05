@@ -87,6 +87,7 @@ public class NotificationService : INotificationService, IDisposable
             {
                 case "viewUpdate":
                     // Bring main window to foreground
+                    App.ShowMainWindow();
                     if (App.MainWindow != null)
                     {
                         var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);

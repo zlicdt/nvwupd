@@ -5,6 +5,8 @@ using NvwUpd.Services;
 using NvwUpd.Core;
 using NvwUpd.ViewModels;
 using System.Diagnostics;
+using System.Linq;
+using Microsoft.UI.Windowing;
 
 namespace NvwUpd;
 
@@ -55,9 +57,43 @@ public partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        var isBackground = IsBackgroundLaunch(args.Arguments);
+
         _window = new MainWindow();
+
+        if (isBackground)
+        {
+            _window.AppWindow.Hide();
+            return;
+        }
+
         _window.Activate();
     }
 
     public static Window? MainWindow => ((App)Current)._window;
+
+    public static void ShowMainWindow()
+    {
+        var app = (App)Current;
+
+        if (app._window == null)
+        {
+            app._window = new MainWindow();
+        }
+
+        app._window.AppWindow.Show();
+        app._window.Activate();
+    }
+
+    private static bool IsBackgroundLaunch(string? arguments)
+    {
+        if (!string.IsNullOrWhiteSpace(arguments))
+        {
+            return arguments.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Any(arg => string.Equals(arg, "--background", StringComparison.OrdinalIgnoreCase));
+        }
+
+        var cliArgs = Environment.GetCommandLineArgs();
+        return cliArgs.Any(arg => string.Equals(arg, "--background", StringComparison.OrdinalIgnoreCase));
+    }
 }
