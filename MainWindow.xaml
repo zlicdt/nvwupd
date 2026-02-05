@@ -175,7 +175,7 @@
                 </Border>
 
                 <!-- Action Buttons -->
-                <StackPanel Orientation="Horizontal" 
+                <StackPanel Orientation="Horizontal" Margin="0,24,0,0"
                             HorizontalAlignment="Right" Spacing="8">
                     <Button x:Name="CheckUpdateButton" Content="检查更新" 
                             Click="CheckUpdateButton_Click"/>
