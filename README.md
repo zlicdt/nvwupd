@@ -15,15 +15,14 @@ A lightweight Windows application to check and update NVIDIA GPU drivers without
 - 🔍 **Automatic GPU Detection** - Detects your NVIDIA GPU via WMI
 - 📡 **Official NVIDIA API** - Uses the same API as nvidia.com/Download
 - 🎮 **Driver Type Selection** - Choose between Game Ready Driver and Studio Driver
-- 🔔 **Windows Notifications** - Get notified when updates are available
-- ⏰ **Periodic Update Checks** - Automatic background checking
+- 🔔 **Windows Notifications** - Get notified when updates are available(developing)
+- ⏰ **Periodic Update Checks** - Automatic background checking(developing)
 - 🎨 **Modern UI** - Built with WinUI 3 and Fluent Design
-- 📦 **Standalone** - No GeForce Experience required
 
 ## Requirements
 
 - Windows 10 version 1809 or later / Windows 11
-- NVIDIA GeForce GPU (GTX 10 series or newer recommended)
+- NVIDIA GeForce GPU
 - .NET 8.0 Runtime
 
 ## Installation
@@ -42,7 +41,7 @@ git clone https://github.com/yourusername/nvwupd.git
 cd nvwupd
 
 # Build the project
-dotnet build -c Release -p:Platform=x64
+dotnet build NvwUpd.csproj -c Release -p:Platform=x64
 
 # Run the application
 .\bin\x64\Release\net8.0-windows10.0.22621.0\NvwUpd.exe

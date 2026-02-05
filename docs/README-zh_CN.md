@@ -15,15 +15,14 @@
 - 🔍 **自动检测 GPU** - 通过 WMI 自动检测您的 NVIDIA 显卡
 - 📡 **官方 NVIDIA API** - 使用与 nvidia.com/Download 相同的官方 API
 - 🎮 **驱动类型选择** - 可选择 Game Ready 驱动或 Studio 驱动
-- 🔔 **Windows 通知** - 有更新时发送系统通知
-- ⏰ **定期检查更新** - 后台自动检查更新
+- 🔔 **Windows 通知** - 有更新时发送系统通知（开发中）
+- ⏰ **定期检查更新** - 后台自动检查更新（开发中）
 - 🎨 **现代化界面** - 基于 WinUI 3 和 Fluent Design 构建
-- 📦 **独立运行** - 无需 GeForce Experience
 
 ## 系统要求
 
 - Windows 10 版本 1809 或更高 / Windows 11
-- NVIDIA GeForce 显卡（推荐 GTX 10 系列或更新）
+- NVIDIA GeForce 显卡
 - .NET 8.0 运行时
 
 ## 安装
@@ -42,7 +41,7 @@ git clone https://github.com/yourusername/nvwupd.git
 cd nvwupd
 
 # 构建项目
-dotnet build -c Release -p:Platform=x64
+dotnet build NvwUpd.csproj -c Release -p:Platform=x64
 
 # 运行应用
 .\bin\x64\Release\net8.0-windows10.0.22621.0\NvwUpd.exe
