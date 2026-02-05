@@ -1,6 +1,6 @@
 # Fetch API Documentation
 
-**[中文版](fetch-zh_CN.md)**
+**[中文](fetch-zh_CN.md)**
 
 This document describes how to use NVIDIA's official API to get the driver list for a specific GPU model.
 
