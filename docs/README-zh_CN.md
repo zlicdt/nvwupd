@@ -75,12 +75,19 @@ NvwUpd/
 │   ├── GpuDetector.cs     # GPU 检测（WMI）
 │   ├── DriverFetcher.cs   # NVIDIA API 集成
 │   ├── DriverDownloader.cs # 带进度的下载
-│   └── DriverInstaller.cs # 静默安装
+│   ├── DriverInstaller.cs # 静默安装
+│   └── Interfaces.cs      # 核心接口定义
 ├── Services/              # 后台服务
+│   ├── IServices.cs       # 服务接口定义
 │   ├── NotificationService.cs
+│   ├── SettingsService.cs
 │   └── UpdateChecker.cs
 ├── ViewModels/            # MVVM 视图模型
-└── Models/                # 数据模型
+├── Models/                # 数据模型与配置
+│   ├── AppSettings.cs
+│   └── DriverModels.cs
+└── scripts/               # 辅助脚本
+	└── set-version.ps1
 ```
 
 ## 贡献

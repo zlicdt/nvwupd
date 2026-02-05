@@ -75,12 +75,19 @@ NvwUpd/
 │   ├── GpuDetector.cs     # GPU detection via WMI
 │   ├── DriverFetcher.cs   # NVIDIA API integration
 │   ├── DriverDownloader.cs # Download with progress
-│   └── DriverInstaller.cs # Silent installation
+│   ├── DriverInstaller.cs # Silent installation
+│   └── Interfaces.cs      # Core interfaces
 ├── Services/              # Background services
+│   ├── IServices.cs       # Service interfaces
 │   ├── NotificationService.cs
+│   ├── SettingsService.cs
 │   └── UpdateChecker.cs
 ├── ViewModels/            # MVVM ViewModels
-└── Models/                # Data models
+├── Models/                # Data models and settings
+│   ├── AppSettings.cs
+│   └── DriverModels.cs
+└── scripts/               # Helper scripts
+	└── set-version.ps1
 ```
 
 ## TODO list
