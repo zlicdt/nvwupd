@@ -28,6 +28,7 @@ public sealed partial class MainWindow : Window
     private bool _canResume;
     private DriverType _currentDriverType = DriverType.GameReady;
     private AppSettings _settings = new();
+    private TrayIconManager? _trayIcon;
 
     public MainWindow()
     {
@@ -49,8 +50,27 @@ public sealed partial class MainWindow : Window
         _updateChecker = App.Services.GetRequiredService<IUpdateChecker>();
         _settingsService = App.Services.GetRequiredService<ISettingsService>();
 
+        _trayIcon = new TrayIconManager(
+            this,
+            () => App.ShowMainWindow(),
+            () => _updateChecker.CheckForUpdateAsync(),
+            () =>
+            {
+                _trayIcon?.Dispose();
+                _trayIcon = null;
+                App.Current.Exit();
+            });
+
+        Closed += MainWindow_Closed;
+
         // Initialize
         InitializeAsync();
+    }
+
+    private void MainWindow_Closed(object sender, WindowEventArgs args)
+    {
+        _trayIcon?.Dispose();
+        _trayIcon = null;
     }
 
     private async void InitializeAsync()

@@ -47,7 +47,6 @@ public partial class App : Application
                 services.AddSingleton<INotificationService, NotificationService>();
                 services.AddSingleton<IUpdateChecker, UpdateChecker>();
                 services.AddSingleton<ISettingsService, SettingsService>();
-                services.AddSingleton<ITrayIconService, TrayIconService>();
 
                 // ViewModels
                 services.AddTransient<MainViewModel>();
@@ -61,7 +60,6 @@ public partial class App : Application
         var isBackground = IsBackgroundLaunch(args.Arguments);
 
         _window = new MainWindow();
-        Services.GetRequiredService<ITrayIconService>().Initialize();
 
         if (isBackground)
         {
