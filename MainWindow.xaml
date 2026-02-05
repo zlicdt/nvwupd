@@ -14,25 +14,25 @@
         </Grid.RowDefinitions>
 
         <!-- Custom Title Bar -->
-        <Grid x:Name="AppTitleBar" Grid.Row="0" Background="Transparent">
+        <Grid x:Name="AppTitleBar" Grid.Row="0" Background="Transparent" Padding="24,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <FontIcon Glyph="&#xE7FC;" FontSize="16" Margin="8,0,0,0"/>
+            <FontIcon Glyph="&#xE7FC;" FontSize="16" Margin="0,0,0,0"/>
             <TextBlock Grid.Column="1" Text="NVIDIA Driver Updater" 
                        VerticalAlignment="Center" Margin="8,0,0,0"
                        Style="{StaticResource CaptionTextBlockStyle}"/>
         </Grid>
 
         <!-- Main Content -->
-        <Grid Grid.Row="1" Padding="24">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid Padding="24">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
             <!-- Header -->
             <StackPanel Grid.Row="0" Spacing="8">
@@ -45,7 +45,7 @@
             </StackPanel>
 
             <!-- GPU Info Card -->
-            <Border Grid.Row="1" Margin="0,24,0,0"
+                <Border Grid.Row="1" Margin="0,24,0,0"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
@@ -81,108 +81,111 @@
             </Border>
 
             <!-- Update Info (hidden by default) -->
-            <Border x:Name="UpdateCard" Grid.Row="2" Margin="0,16,0,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource AccentFillColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Padding="16"
-                    Visibility="Collapsed">
-                <StackPanel Spacing="12">
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <FontIcon Glyph="&#xE896;" Foreground="{ThemeResource AccentFillColorDefaultBrush}"/>
-                        <TextBlock Text="发现新版本驱动！" 
-                                   Style="{StaticResource SubtitleTextBlockStyle}"/>
-                    </StackPanel>
+            <StackPanel Grid.Row="2" Spacing="16">
+                <Border x:Name="UpdateCard" Margin="0,24,0,0"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource AccentFillColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="16"
+                        Visibility="Collapsed">
+                    <StackPanel Spacing="12">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE896;" Foreground="{ThemeResource AccentFillColorDefaultBrush}"/>
+                            <TextBlock Text="发现新版本驱动！" 
+                                       Style="{StaticResource SubtitleTextBlockStyle}"/>
+                        </StackPanel>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Text="最新版本:" 
-                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                        <TextBlock x:Name="LatestVersionText" Grid.Column="1" 
-                                   Text="--" FontWeight="SemiBold"
-                                   Foreground="{ThemeResource AccentFillColorDefaultBrush}"/>
-
-                        <TextBlock Grid.Row="1" Text="发布日期:" 
-                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                   Margin="0,4,0,0"/>
-                        <TextBlock x:Name="ReleaseDateText" Grid.Row="1" Grid.Column="1" 
-                                   Text="--" Margin="0,4,0,0"/>
-                    </Grid>
-
-                    <!-- Driver Type Selection -->
-                    <TextBlock Text="选择驱动类型" 
-                               Style="{StaticResource BodyStrongTextBlockStyle}"
-                               Margin="0,8,0,0"/>
-
-                    <controls:RadioButtons x:Name="DriverTypeSelector">
-                        <RadioButton x:Name="GameReadyRadio" IsChecked="True">
-                            <StackPanel>
-                                <TextBlock Text="Game Ready Driver (推荐)" FontWeight="SemiBold"/>
-                                <TextBlock Text="针对最新游戏优化，提供最佳游戏体验" 
-                                           Style="{StaticResource CaptionTextBlockStyle}"
-                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                            </StackPanel>
-                        </RadioButton>
-                        <RadioButton x:Name="StudioRadio">
-                            <StackPanel>
-                                <TextBlock Text="Studio Driver" FontWeight="SemiBold"/>
-                                <TextBlock Text="针对创意应用优化，提供更稳定的工作环境" 
-                                           Style="{StaticResource CaptionTextBlockStyle}"
-                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                            </StackPanel>
-                        </RadioButton>
-                    </controls:RadioButtons>
-
-                    <!-- Download Progress Section -->
-                    <StackPanel x:Name="DownloadProgressPanel" Spacing="8" 
-                                Margin="0,12,0,0" Visibility="Collapsed">
-                        <TextBlock Text="下载进度" 
-                                   Style="{StaticResource BodyStrongTextBlockStyle}"/>
-                        <ProgressBar x:Name="DownloadProgressBar" 
-                                     Minimum="0" Maximum="100" Value="0"
-                                     Height="8" CornerRadius="4"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="DownloadPercentText" Text="0%"
-                                       Style="{StaticResource CaptionTextBlockStyle}"
-                                       Foreground="{ThemeResource AccentFillColorDefaultBrush}"
-                                       FontWeight="SemiBold"/>
-                            <TextBlock Grid.Column="1" x:Name="DownloadPathText" 
-                                       Text="" TextTrimming="CharacterEllipsis"
-                                       HorizontalAlignment="Right"
-                                       Style="{StaticResource CaptionTextBlockStyle}"
-                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                       ToolTipService.ToolTip="{Binding Text, ElementName=DownloadPathText}"/>
-                        </Grid>
-                        <Button x:Name="DownloadControlButton" Content="中断下载"
-                                HorizontalAlignment="Left" Visibility="Collapsed"
-                                Click="DownloadControlButton_Click"/>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-            <!-- Action Buttons -->
-            <StackPanel Grid.Row="3" Orientation="Horizontal" 
-                        HorizontalAlignment="Right" Spacing="8">
-                <Button x:Name="CheckUpdateButton" Content="检查更新" 
-                        Click="CheckUpdateButton_Click"/>
-                <Button x:Name="UpdateButton" Content="立即更新" 
-                        Style="{StaticResource AccentButtonStyle}"
-                        Click="UpdateButton_Click"
-                        IsEnabled="False"/>
+                            <TextBlock Text="最新版本:" 
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock x:Name="LatestVersionText" Grid.Column="1" 
+                                       Text="--" FontWeight="SemiBold"
+                                       Foreground="{ThemeResource AccentFillColorDefaultBrush}"/>
+
+                            <TextBlock Grid.Row="1" Text="发布日期:" 
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                       Margin="0,4,0,0"/>
+                            <TextBlock x:Name="ReleaseDateText" Grid.Row="1" Grid.Column="1" 
+                                       Text="--" Margin="0,4,0,0"/>
+                        </Grid>
+
+                        <!-- Driver Type Selection -->
+                        <TextBlock Text="选择驱动类型" 
+                                   Style="{StaticResource BodyStrongTextBlockStyle}"
+                                   Margin="0,8,0,0"/>
+
+                        <controls:RadioButtons x:Name="DriverTypeSelector">
+                            <RadioButton x:Name="GameReadyRadio" IsChecked="True">
+                                <StackPanel>
+                                    <TextBlock Text="Game Ready Driver (推荐)" FontWeight="SemiBold"/>
+                                    <TextBlock Text="针对最新游戏优化，提供最佳游戏体验" 
+                                               Style="{StaticResource CaptionTextBlockStyle}"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton x:Name="StudioRadio">
+                                <StackPanel>
+                                    <TextBlock Text="Studio Driver" FontWeight="SemiBold"/>
+                                    <TextBlock Text="针对创意应用优化，提供更稳定的工作环境" 
+                                               Style="{StaticResource CaptionTextBlockStyle}"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                </StackPanel>
+                            </RadioButton>
+                        </controls:RadioButtons>
+
+                        <!-- Download Progress Section -->
+                        <StackPanel x:Name="DownloadProgressPanel" Spacing="8" 
+                                    Margin="0,12,0,0" Visibility="Collapsed">
+                            <TextBlock Text="下载进度" 
+                                       Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                            <ProgressBar x:Name="DownloadProgressBar" 
+                                         Minimum="0" Maximum="100" Value="0"
+                                         Height="8" CornerRadius="4"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="DownloadPercentText" Text="0%"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource AccentFillColorDefaultBrush}"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Grid.Column="1" x:Name="DownloadPathText" 
+                                           Text="" TextTrimming="CharacterEllipsis"
+                                           HorizontalAlignment="Right"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                           ToolTipService.ToolTip="{Binding Text, ElementName=DownloadPathText}"/>
+                            </Grid>
+                            <Button x:Name="DownloadControlButton" Content="中断下载"
+                                    HorizontalAlignment="Right" Visibility="Collapsed"
+                                    Click="DownloadControlButton_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Action Buttons -->
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Right" Spacing="8">
+                    <Button x:Name="CheckUpdateButton" Content="检查更新" 
+                            Click="CheckUpdateButton_Click"/>
+                    <Button x:Name="UpdateButton" Content="立即更新" 
+                            Style="{StaticResource AccentButtonStyle}"
+                            Click="UpdateButton_Click"
+                            IsEnabled="False"/>
+                </StackPanel>
             </StackPanel>
         </Grid>
+        </ScrollViewer>
     </Grid>
 </Window>
