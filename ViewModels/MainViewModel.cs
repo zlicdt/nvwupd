@@ -1,3 +1,4 @@
+using System.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using NvwUpd.Core;
@@ -138,15 +139,16 @@ public partial class MainViewModel : ViewModelBase
                 StatusMessage = $"正在下载... {p:P0}";
             });
 
-            var installerPath = await _driverDownloader.DownloadDriverAsync(
+            var downloadResult = await _driverDownloader.DownloadDriverAsync(
                 LatestDriver, 
                 SelectedDriverType, 
-                progress);
-            
-            DownloadPath = installerPath;
+                progress,
+                CancellationToken.None);
+
+            DownloadPath = downloadResult.FilePath;
 
             StatusMessage = "正在安装驱动...";
-            await _driverInstaller.InstallDriverAsync(installerPath);
+            await _driverInstaller.InstallDriverAsync(downloadResult.FilePath);
 
             StatusMessage = "驱动安装完成！建议重启计算机。";
             HasUpdate = false;

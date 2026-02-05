@@ -83,6 +83,27 @@ public class DriverInfo
 }
 
 /// <summary>
+/// Represents a driver download result.
+/// </summary>
+public class DownloadResult
+{
+    /// <summary>
+    /// Path to the downloaded file.
+    /// </summary>
+    public required string FilePath { get; init; }
+
+    /// <summary>
+    /// Indicates the download resumed from an existing partial file.
+    /// </summary>
+    public bool WasResumed { get; init; }
+
+    /// <summary>
+    /// Indicates the download had to restart from scratch.
+    /// </summary>
+    public bool WasRestarted { get; init; }
+}
+
+/// <summary>
 /// NVIDIA driver types.
 /// </summary>
 public enum DriverType

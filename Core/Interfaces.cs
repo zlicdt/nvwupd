@@ -46,11 +46,13 @@ public interface IDriverDownloader
     /// <param name="driverInfo">Driver information.</param>
     /// <param name="driverType">Type of driver to download.</param>
     /// <param name="progress">Progress reporter.</param>
-    /// <returns>Path to the downloaded file.</returns>
-    Task<string> DownloadDriverAsync(
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Download result.</returns>
+    Task<DownloadResult> DownloadDriverAsync(
         DriverInfo driverInfo, 
         DriverType driverType,
-        IProgress<double>? progress = null);
+        IProgress<double>? progress = null,
+        CancellationToken cancellationToken = default);
 }
 
 /// <summary>

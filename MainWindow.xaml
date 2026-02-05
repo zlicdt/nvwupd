@@ -166,6 +166,9 @@
                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                        ToolTipService.ToolTip="{Binding Text, ElementName=DownloadPathText}"/>
                         </Grid>
+                        <Button x:Name="DownloadControlButton" Content="中断下载"
+                                HorizontalAlignment="Left" Visibility="Collapsed"
+                                Click="DownloadControlButton_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

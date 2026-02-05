@@ -17,6 +17,10 @@ public sealed partial class MainWindow : Window
 
     private GpuInfo? _gpuInfo;
     private DriverInfo? _latestDriver;
+    private CancellationTokenSource? _downloadCts;
+    private bool _isDownloading;
+    private bool _canResume;
+    private DriverType _currentDriverType = DriverType.GameReady;
 
     public MainWindow()
     {
@@ -123,14 +127,42 @@ public sealed partial class MainWindow : Window
     {
         if (_latestDriver == null || _gpuInfo == null) return;
 
-        UpdateButton.IsEnabled = false;
-        CheckUpdateButton.IsEnabled = false;
-
-        var driverType = GameReadyRadio.IsChecked == true 
-            ? DriverType.GameReady 
+        _currentDriverType = GameReadyRadio.IsChecked == true
+            ? DriverType.GameReady
             : DriverType.Studio;
 
-        Console.WriteLine($"[MainWindow] Starting update, driver type: {driverType}");
+        await StartDownloadAndInstallAsync();
+    }
+
+    private async void DownloadControlButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_isDownloading)
+        {
+            _downloadCts?.Cancel();
+            return;
+        }
+
+        if (_canResume)
+        {
+            await StartDownloadAndInstallAsync();
+        }
+    }
+
+    private async Task StartDownloadAndInstallAsync()
+    {
+        if (_latestDriver == null || _gpuInfo == null) return;
+
+        UpdateButton.IsEnabled = false;
+        CheckUpdateButton.IsEnabled = false;
+        DownloadControlButton.Visibility = Visibility.Visible;
+        DownloadControlButton.Content = "中断下载";
+        _canResume = false;
+        _isDownloading = true;
+
+        _downloadCts?.Dispose();
+        _downloadCts = new CancellationTokenSource();
+
+        Console.WriteLine($"[MainWindow] Starting update, driver type: {_currentDriverType}");
         Console.WriteLine($"[MainWindow] Download URL: {_latestDriver.DownloadUrl}");
 
         // Show download progress panel
@@ -141,8 +173,22 @@ public sealed partial class MainWindow : Window
         // Show expected download path
         var expectedPath = System.IO.Path.Combine(
             System.IO.Path.GetTempPath(), "NvwUpd", "Downloads", 
-            $"NVIDIA-Driver-{_latestDriver.Version}-{driverType}.exe");
+            $"NVIDIA-Driver-{_latestDriver.Version}-{_currentDriverType}.exe");
         DownloadPathText.Text = expectedPath;
+
+        var existingSize = 0L;
+        if (System.IO.File.Exists(expectedPath))
+        {
+            existingSize = new System.IO.FileInfo(expectedPath).Length;
+        }
+
+        if (_latestDriver.FileSize > 0 && existingSize > 0 && existingSize < _latestDriver.FileSize)
+        {
+            var resumedProgress = (double)existingSize / _latestDriver.FileSize;
+            DownloadProgressBar.Value = resumedProgress * 100;
+            DownloadPercentText.Text = $"{resumedProgress:P0}";
+            StatusText.Text = $"检测到已下载 {resumedProgress:P0}，准备继续下载...";
+        }
 
         try
         {
@@ -156,29 +202,67 @@ public sealed partial class MainWindow : Window
                 StatusText.Text = $"正在下载... {p:P0}";
             });
             
-            var downloadPath = await _driverDownloader.DownloadDriverAsync(_latestDriver, driverType, progress);
-            Console.WriteLine($"[MainWindow] Downloaded to: {downloadPath}");
+            var downloadResult = await _driverDownloader.DownloadDriverAsync(
+                _latestDriver,
+                _currentDriverType,
+                progress,
+                _downloadCts.Token);
+            Console.WriteLine($"[MainWindow] Downloaded to: {downloadResult.FilePath}");
             
             // Update path to actual downloaded location
-            DownloadPathText.Text = downloadPath;
+            DownloadPathText.Text = downloadResult.FilePath;
+
+            if (downloadResult.WasRestarted && existingSize > 0)
+            {
+                StatusText.Text = "服务器不支持断点续传，已重新下载";
+            }
 
             StatusText.Text = "正在安装驱动...";
             Console.WriteLine("[MainWindow] Installing driver...");
-            await _driverInstaller.InstallDriverAsync(downloadPath);
+            await _driverInstaller.InstallDriverAsync(downloadResult.FilePath);
 
             StatusText.Text = "驱动安装完成！建议重启计算机。";
             Console.WriteLine("[MainWindow] Installation complete!");
+
+            _canResume = false;
+            DownloadControlButton.Visibility = Visibility.Collapsed;
+        }
+        catch (OperationCanceledException) when (_downloadCts?.IsCancellationRequested == true)
+        {
+            StatusText.Text = "下载已中断，可继续下载";
+            _canResume = true;
+        }
+        catch (HttpRequestException ex)
+        {
+            StatusText.Text = $"下载中断：{ex.Message}";
+            _canResume = true;
+        }
+        catch (IOException ex)
+        {
+            StatusText.Text = $"下载中断：{ex.Message}";
+            _canResume = true;
         }
         catch (Exception ex)
         {
             StatusText.Text = $"更新失败: {ex.Message}";
             Console.WriteLine($"[MainWindow] Update failed: {ex.Message}");
             Console.WriteLine($"[MainWindow] Stack trace: {ex.StackTrace}");
+            _canResume = false;
         }
         finally
         {
-            UpdateButton.IsEnabled = true;
-            CheckUpdateButton.IsEnabled = true;
+            _isDownloading = false;
+            if (_canResume)
+            {
+                DownloadControlButton.Content = "继续下载";
+                UpdateButton.IsEnabled = true;
+                CheckUpdateButton.IsEnabled = true;
+            }
+            else
+            {
+                UpdateButton.IsEnabled = true;
+                CheckUpdateButton.IsEnabled = true;
+            }
         }
     }
 
