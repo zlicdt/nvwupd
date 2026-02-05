@@ -44,6 +44,7 @@ public partial class App : Application
                 // Application services
                 services.AddSingleton<INotificationService, NotificationService>();
                 services.AddSingleton<IUpdateChecker, UpdateChecker>();
+                services.AddSingleton<ISettingsService, SettingsService>();
 
                 // ViewModels
                 services.AddTransient<MainViewModel>();

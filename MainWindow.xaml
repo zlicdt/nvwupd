@@ -35,14 +35,23 @@
                 </Grid.RowDefinitions>
 
             <!-- Header -->
-            <StackPanel Grid.Row="0" Spacing="8">
-                <TextBlock Text="🎮 NVIDIA 驱动更新工具" 
-                           Style="{StaticResource TitleTextBlockStyle}"/>
-                <TextBlock x:Name="StatusText" 
-                           Text="正在检测 GPU 信息..." 
-                           Style="{StaticResource BodyTextBlockStyle}"
-                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-            </StackPanel>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Spacing="8">
+                    <TextBlock Text="🎮 NVIDIA 驱动更新工具" 
+                               Style="{StaticResource TitleTextBlockStyle}"/>
+                    <TextBlock x:Name="StatusText" 
+                               Text="正在检测 GPU 信息..." 
+                               Style="{StaticResource BodyTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+                <Button x:Name="SettingsButton" Grid.Column="1" Content="设置"
+                        VerticalAlignment="Top" HorizontalAlignment="Right"
+                        Click="SettingsButton_Click"/>
+            </Grid>
 
             <!-- GPU Info Card -->
                 <Border Grid.Row="1" Margin="0,24,0,0"

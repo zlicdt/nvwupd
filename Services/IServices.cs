@@ -45,6 +45,27 @@ public interface IUpdateChecker
 }
 
 /// <summary>
+/// Interface for app settings storage.
+/// </summary>
+public interface ISettingsService
+{
+    /// <summary>
+    /// Current settings instance.
+    /// </summary>
+    AppSettings Current { get; }
+
+    /// <summary>
+    /// Loads settings from storage.
+    /// </summary>
+    Task<AppSettings> LoadAsync();
+
+    /// <summary>
+    /// Saves settings to storage.
+    /// </summary>
+    Task SaveAsync(AppSettings settings);
+}
+
+/// <summary>
 /// Event args for when an update is found.
 /// </summary>
 public class UpdateFoundEventArgs : EventArgs

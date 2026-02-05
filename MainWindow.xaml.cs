@@ -3,6 +3,8 @@ using Microsoft.UI.Windowing;
 using Microsoft.Extensions.DependencyInjection;
 using NvwUpd.Core;
 using NvwUpd.Models;
+using NvwUpd.Services;
+using Microsoft.UI.Xaml.Controls;
 using Windows.Graphics;
 
 namespace NvwUpd;
@@ -16,6 +18,8 @@ public sealed partial class MainWindow : Window
     private readonly IDriverFetcher _driverFetcher;
     private readonly IDriverDownloader _driverDownloader;
     private readonly IDriverInstaller _driverInstaller;
+    private readonly IUpdateChecker _updateChecker;
+    private readonly ISettingsService _settingsService;
 
     private GpuInfo? _gpuInfo;
     private DriverInfo? _latestDriver;
@@ -23,6 +27,7 @@ public sealed partial class MainWindow : Window
     private bool _isDownloading;
     private bool _canResume;
     private DriverType _currentDriverType = DriverType.GameReady;
+    private AppSettings _settings = new();
 
     public MainWindow()
     {
@@ -41,6 +46,8 @@ public sealed partial class MainWindow : Window
         _driverFetcher = App.Services.GetRequiredService<IDriverFetcher>();
         _driverDownloader = App.Services.GetRequiredService<IDriverDownloader>();
         _driverInstaller = App.Services.GetRequiredService<IDriverInstaller>();
+        _updateChecker = App.Services.GetRequiredService<IUpdateChecker>();
+        _settingsService = App.Services.GetRequiredService<ISettingsService>();
 
         // Initialize
         InitializeAsync();
@@ -74,6 +81,68 @@ public sealed partial class MainWindow : Window
             Console.WriteLine($"[MainWindow] Detection failed: {ex.Message}");
             StatusText.Text = $"检测失败: {ex.Message}";
         }
+
+        await LoadSettingsAsync();
+    }
+
+    private async Task LoadSettingsAsync()
+    {
+        _settings = await _settingsService.LoadAsync();
+        ApplyCheckInterval(_settings.CheckIntervalHours);
+    }
+
+    private void ApplyCheckInterval(int hours)
+    {
+        if (hours <= 0)
+        {
+            hours = 24;
+        }
+
+        _updateChecker.StartPeriodicCheck(TimeSpan.FromHours(hours));
+    }
+
+    private async void SettingsButton_Click(object sender, RoutedEventArgs e)
+    {
+        var numberBox = new NumberBox
+        {
+            Minimum = 1,
+            Maximum = 168,
+            Value = _settings.CheckIntervalHours,
+            SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Inline
+        };
+
+        var panel = new StackPanel { Spacing = 12 };
+        panel.Children.Add(new TextBlock { Text = "自动检查间隔（小时）" });
+        panel.Children.Add(numberBox);
+
+        var dialog = new ContentDialog
+        {
+            Title = "设置",
+            PrimaryButtonText = "保存",
+            CloseButtonText = "取消",
+            Content = panel
+        };
+
+        if (Content is FrameworkElement root)
+        {
+            dialog.XamlRoot = root.XamlRoot;
+        }
+
+        var result = await dialog.ShowAsync();
+        if (result != ContentDialogResult.Primary)
+        {
+            return;
+        }
+
+        var hours = (int)Math.Round(numberBox.Value);
+        if (hours <= 0)
+        {
+            hours = 24;
+        }
+
+        _settings.CheckIntervalHours = hours;
+        await _settingsService.SaveAsync(_settings);
+        ApplyCheckInterval(hours);
     }
 
     private async void CheckUpdateButton_Click(object sender, RoutedEventArgs e)
