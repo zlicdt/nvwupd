@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore NvwUpd.csproj
+
+      - name: Build (Release x64)
+        run: dotnet build NvwUpd.csproj -c Release -p:Platform=x64
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $out = "bin\\x64\\Release\\net8.0-windows10.0.22621.0"
+          $zip = "NvwUpd-${{ github.ref_name }}-win-x64.zip"
+          Compress-Archive -Path "$out\\*" -DestinationPath $zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: NvwUpd-${{ github.ref_name }}-win-x64.zip
