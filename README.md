@@ -90,7 +90,7 @@ NvwUpd/
 - [ ] Project logo / icons
 - [ ] Run as a background service
 - [ ] Autostart during boot
-- [ ] Periodic Update Checks
+- [x] Periodic Update Checks
 - [ ] Windows Notifications
 - [ ] Test on out-of-date cards
 - [ ] Setup executable
