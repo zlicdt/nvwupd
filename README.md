@@ -4,7 +4,7 @@
 [![.NET](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/)
 [![Windows](https://img.shields.io/badge/Windows-10%2F11-blue.svg)](https://www.microsoft.com/windows)
 
-**[中文](docs/README-zh_CN.md)**/English
+**[中文](docs/README-zh_CN.md)** / English
 
 A lightweight Windows application to check and update NVIDIA GPU drivers without requiring GeForce Experience.
 
