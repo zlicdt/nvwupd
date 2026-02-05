@@ -95,7 +95,7 @@ NvwUpd/
 - [x] Call API for query
 - [x] Download driver and start installation
 - [ ] Project logo / icons
-- [ ] Run as a background service
+- [x] Run as a background service
 - [ ] Autostart during boot
 - [x] Periodic Update Checks
 - [x] Windows Notifications
