@@ -101,6 +101,7 @@ NvwUpd/
 - [ ] Windows Notifications
 - [ ] Test on out-of-date cards
 - [ ] Setup executable
+- [ ] Localization
 
 ## Contributing
 
