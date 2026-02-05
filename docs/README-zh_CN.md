@@ -4,7 +4,7 @@
 [![.NET](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/)
 [![Windows](https://img.shields.io/badge/Windows-10%2F11-blue.svg)](https://www.microsoft.com/windows)
 
-**[English](../README.md)**
+中文/**[English](../README.md)**
 
 一个轻量级的 Windows 应用程序，用于检查和更新 NVIDIA GPU 驱动，无需安装 GeForce Experience。
 
