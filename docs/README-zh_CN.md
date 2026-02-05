@@ -83,26 +83,6 @@ NvwUpd/
 └── Models/                # 数据模型
 ```
 
-## 配置
-
-设置存储在 `%APPDATA%\NvwUpd\settings.json`：
-
-```json
-{
-  "preferredDriverType": "GameReady",
-  "checkIntervalHours": 24,
-  "autoDownload": false,
-  "showNotifications": true
-}
-```
-
-| 配置项 | 说明 | 默认值 |
-|--------|------|--------|
-| `preferredDriverType` | 首选驱动类型：`GameReady` 或 `Studio` | `GameReady` |
-| `checkIntervalHours` | 检查更新间隔（小时） | `24` |
-| `autoDownload` | 发现更新时自动下载 | `false` |
-| `showNotifications` | 显示系统通知 | `true` |
-
 ## 贡献
 
 欢迎贡献代码！请随时提交 Pull Request。

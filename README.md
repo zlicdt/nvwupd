@@ -83,18 +83,17 @@ NvwUpd/
 └── Models/                # Data models
 ```
 
-## Configuration
-
-Settings are stored in `%APPDATA%\NvwUpd\settings.json`:
-
-```json
-{
-  "preferredDriverType": "GameReady",
-  "checkIntervalHours": 24,
-  "autoDownload": false,
-  "showNotifications": true
-}
-```
+## TODO list
+- [x] GPU Detection
+- [x] Call API for query
+- [x] Download driver and start installation
+- [ ] Project logo / icons
+- [ ] Run as a background service
+- [ ] Autostart during boot
+- [ ] Periodic Update Checks
+- [ ] Windows Notifications
+- [ ] Test on out-of-date cards
+- [ ] Setup executable
 
 ## Contributing
 
