@@ -25,7 +25,7 @@ jobs:
         run: dotnet restore NvwUpd.csproj
 
       - name: Publish (Release x64, no runtime)
-        run: dotnet publish NvwUpd.csproj -c Release -p:Platform=x64 -o publish
+        run: dotnet publish NvwUpd.csproj -c Release -p:Platform=x64 -r win-x64 --self-contained false -o publish
 
       - name: Publish (Release x64, with runtime)
         run: dotnet publish NvwUpd.csproj -c Release -p:Platform=x64 -r win-x64 -p:WindowsAppSDKSelfContained=true -o publish-runtime
