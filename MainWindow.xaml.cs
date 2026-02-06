@@ -20,6 +20,7 @@ public sealed partial class MainWindow : Window
     private readonly IDriverInstaller _driverInstaller;
     private readonly IUpdateChecker _updateChecker;
     private readonly ISettingsService _settingsService;
+    private readonly IStartupService _startupService;
 
     private GpuInfo? _gpuInfo;
     private DriverInfo? _latestDriver;
@@ -49,6 +50,7 @@ public sealed partial class MainWindow : Window
         _driverDownloader = App.Services.GetRequiredService<IDriverDownloader>();
         _driverInstaller = App.Services.GetRequiredService<IDriverInstaller>();
         _updateChecker = App.Services.GetRequiredService<IUpdateChecker>();
+        _startupService = App.Services.GetRequiredService<IStartupService>();
         _settingsService = App.Services.GetRequiredService<ISettingsService>();
 
         _trayIcon = new TrayIconManager(
@@ -143,9 +145,16 @@ public sealed partial class MainWindow : Window
             SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Inline
         };
 
+        var startupCheckbox = new CheckBox
+        {
+            Content = "开机自启动",
+            IsChecked = _startupService.IsEnabled
+        };
+
         var panel = new StackPanel { Spacing = 12 };
         panel.Children.Add(new TextBlock { Text = "自动检查间隔（小时）" });
         panel.Children.Add(numberBox);
+        panel.Children.Add(startupCheckbox);
 
         var dialog = new ContentDialog
         {
@@ -175,6 +184,18 @@ public sealed partial class MainWindow : Window
         _settings.CheckIntervalHours = hours;
         await _settingsService.SaveAsync(_settings);
         ApplyCheckInterval(hours);
+        
+        if (startupCheckbox.IsChecked.HasValue)
+        {
+            try
+            {
+                _startupService.SetEnabled(startupCheckbox.IsChecked.Value);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Settings] Failed to set startup: {ex.Message}");
+            }
+        }
     }
 
     private async void CheckUpdateButton_Click(object sender, RoutedEventArgs e)

@@ -96,7 +96,7 @@ NvwUpd/
 - [x] Download driver and start installation
 - [ ] Project logo / icons
 - [x] Run as a background service
-- [ ] Autostart during boot
+- [x] Autostart during boot
 - [x] Periodic Update Checks
 - [x] Windows Notifications
 - [ ] Test on out-of-date cards
