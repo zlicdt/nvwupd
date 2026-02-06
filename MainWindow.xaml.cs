@@ -29,6 +29,7 @@ public sealed partial class MainWindow : Window
     private DriverType _currentDriverType = DriverType.GameReady;
     private AppSettings _settings = new();
     private TrayIconManager? _trayIcon;
+    private bool _isExplicitExit = false;
 
     public MainWindow()
     {
@@ -56,15 +57,26 @@ public sealed partial class MainWindow : Window
             () => _updateChecker.CheckForUpdateAsync(),
             () =>
             {
+                _isExplicitExit = true;
                 _trayIcon?.Dispose();
                 _trayIcon = null;
                 App.Current.Exit();
             });
 
+        AppWindow.Closing += AppWindow_Closing;
         Closed += MainWindow_Closed;
 
         // Initialize
         InitializeAsync();
+    }
+
+    private void AppWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
+    {
+        if (!_isExplicitExit)
+        {
+            args.Cancel = true;
+            sender.Hide();
+        }
     }
 
     private void MainWindow_Closed(object sender, WindowEventArgs args)
