@@ -34,7 +34,16 @@ jobs:
           $zip = "NvwUpd-${{ github.ref_name }}-win-x64.zip"
           Compress-Archive -Path "$out\\*" -DestinationPath $zip
 
+      - name: Build Changelog
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v4
+        with:
+          mode: "COMMIT"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          body: ${{ steps.build_changelog.outputs.changelog }}
           files: NvwUpd-${{ github.ref_name }}-win-x64.zip
