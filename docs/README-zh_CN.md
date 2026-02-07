@@ -112,4 +112,3 @@ NvwUpd/
 
 - [Windows App SDK](https://github.com/microsoft/WindowsAppSDK)
 - [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet)
-- [H.NotifyIcon](https://github.com/HavenDV/H.NotifyIcon)
