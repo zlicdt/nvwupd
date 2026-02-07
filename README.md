@@ -125,4 +125,3 @@ This project is not affiliated with, endorsed by, or sponsored by NVIDIA Corpora
 
 - [Windows App SDK](https://github.com/microsoft/WindowsAppSDK)
 - [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet)
-- [H.NotifyIcon](https://github.com/HavenDV/H.NotifyIcon)
