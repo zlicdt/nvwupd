@@ -15,8 +15,8 @@ A lightweight Windows application to check and update NVIDIA GPU drivers without
 - 🔍 **Automatic GPU Detection** - Detects your NVIDIA GPU via WMI
 - 📡 **Official NVIDIA API** - Uses the same API as nvidia.com/Download
 - 🎮 **Driver Type Selection** - Choose between Game Ready Driver and Studio Driver
-- 🔔 **Windows Notifications** - Get notified when updates are available(developing)
-- ⏰ **Periodic Update Checks** - Automatic background checking(developing)
+- 🔔 **Windows Notifications** - Get notified when updates are available
+- ⏰ **Periodic Update Checks** - Automatic background checking
 - 🎨 **Modern UI** - Built with WinUI 3 and Fluent Design
 
 ## Requirements
