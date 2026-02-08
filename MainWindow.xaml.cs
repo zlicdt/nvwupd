@@ -80,7 +80,32 @@ public sealed partial class MainWindow : Window
     private void InitializeLocalizedUI()
     {
         Title = _localizationService.GetString("AppTitle");
-        // Note: XAML elements will be updated in InitializeAsync and other methods
+        
+        // Header
+        MainTitleText.Text = _localizationService.GetString("MainTitle");
+        SettingsButton.Content = _localizationService.GetString("SettingsButton");
+        
+        // GPU Info Card
+        GpuInfoTitle.Text = _localizationService.GetString("GpuInfo");
+        GpuLabel.Text = _localizationService.GetString("GpuLabel");
+        CurrentVersionLabel.Text = _localizationService.GetString("CurrentVersionLabel");
+        
+        // Update Card
+        NewVersionAvailableText.Text = _localizationService.GetString("NewVersionAvailable");
+        LatestVersionLabel.Text = _localizationService.GetString("LatestVersionLabel");
+        ReleaseDateLabel.Text = _localizationService.GetString("ReleaseDateLabel");
+        SelectDriverTypeText.Text = _localizationService.GetString("SelectDriverType");
+        GameReadyDriverText.Text = _localizationService.GetString("GameReadyDriver");
+        GameReadyDescriptionText.Text = _localizationService.GetString("GameReadyDescription");
+        StudioDriverText.Text = _localizationService.GetString("StudioDriver");
+        StudioDescriptionText.Text = _localizationService.GetString("StudioDescription");
+        
+        // Download Progress
+        DownloadProgressText.Text = _localizationService.GetString("DownloadProgress");
+        
+        // Buttons
+        CheckUpdateButton.Content = _localizationService.GetString("CheckUpdate");
+        UpdateButton.Content = _localizationService.GetString("UpdateNow");
     }
 
     private void AppWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)

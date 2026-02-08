@@ -41,7 +41,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Spacing="8">
-                    <TextBlock Text="NVIDIA 驱动更新工具" 
+                    <TextBlock x:Name="MainTitleText" Text="NVIDIA 驱动更新工具" 
                                Style="{StaticResource TitleTextBlockStyle}"/>
                     <TextBlock x:Name="StatusText" 
                                Text="正在检测 GPU 信息..." 
@@ -71,16 +71,16 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="显卡信息" 
+                    <TextBlock x:Name="GpuInfoTitle" Text="显卡信息" 
                                Style="{StaticResource SubtitleTextBlockStyle}"
                                Grid.ColumnSpan="2" Margin="0,0,0,12"/>
 
-                    <TextBlock Grid.Row="1" Text="GPU:" 
+                    <TextBlock x:Name="GpuLabel" Grid.Row="1" Text="GPU:" 
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                     <TextBlock x:Name="GpuNameText" Grid.Row="1" Grid.Column="1" 
                                Text="检测中..." HorizontalAlignment="Right"/>
 
-                    <TextBlock Grid.Row="2" Text="当前驱动版本:" 
+                    <TextBlock x:Name="CurrentVersionLabel" Grid.Row="2" Text="当前驱动版本:" 
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                Margin="0,4,0,0"/>
                     <TextBlock x:Name="CurrentVersionText" Grid.Row="2" Grid.Column="1" 
@@ -101,7 +101,7 @@
                     <StackPanel Spacing="12">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <FontIcon Glyph="&#xE896;" Foreground="{ThemeResource AccentFillColorDefaultBrush}"/>
-                            <TextBlock Text="发现新版本驱动！" 
+                            <TextBlock x:Name="NewVersionAvailableText" Text="发现新版本驱动！" 
                                        Style="{StaticResource SubtitleTextBlockStyle}"/>
                         </StackPanel>
 
@@ -115,13 +115,13 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="最新版本:" 
+                            <TextBlock x:Name="LatestVersionLabel" Text="最新版本:" 
                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                             <TextBlock x:Name="LatestVersionText" Grid.Column="1" 
                                        Text="--" FontWeight="SemiBold"
                                        Foreground="{ThemeResource AccentFillColorDefaultBrush}"/>
 
-                            <TextBlock Grid.Row="1" Text="发布日期:" 
+                            <TextBlock x:Name="ReleaseDateLabel" Grid.Row="1" Text="发布日期:" 
                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                        Margin="0,4,0,0"/>
                             <TextBlock x:Name="ReleaseDateText" Grid.Row="1" Grid.Column="1" 
@@ -129,23 +129,23 @@
                         </Grid>
 
                         <!-- Driver Type Selection -->
-                        <TextBlock Text="选择驱动类型" 
+                        <TextBlock x:Name="SelectDriverTypeText" Text="选择驱动类型" 
                                    Style="{StaticResource BodyStrongTextBlockStyle}"
                                    Margin="0,8,0,0"/>
 
                         <controls:RadioButtons x:Name="DriverTypeSelector">
                             <RadioButton x:Name="GameReadyRadio" IsChecked="True">
                                 <StackPanel>
-                                    <TextBlock Text="Game Ready Driver (推荐)" FontWeight="SemiBold"/>
-                                    <TextBlock Text="针对最新游戏优化，提供最佳游戏体验" 
+                                    <TextBlock x:Name="GameReadyDriverText" Text="Game Ready Driver (推荐)" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="GameReadyDescriptionText" Text="针对最新游戏优化，提供最佳游戏体验" 
                                                Style="{StaticResource CaptionTextBlockStyle}"
                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                                 </StackPanel>
                             </RadioButton>
                             <RadioButton x:Name="StudioRadio">
                                 <StackPanel>
-                                    <TextBlock Text="Studio Driver" FontWeight="SemiBold"/>
-                                    <TextBlock Text="针对创意应用优化，提供更稳定的工作环境" 
+                                    <TextBlock x:Name="StudioDriverText" Text="Studio Driver" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="StudioDescriptionText" Text="针对创意应用优化，提供更稳定的工作环境" 
                                                Style="{StaticResource CaptionTextBlockStyle}"
                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                                 </StackPanel>
@@ -155,7 +155,7 @@
                         <!-- Download Progress Section -->
                         <StackPanel x:Name="DownloadProgressPanel" Spacing="8" 
                                     Margin="0,12,0,0" Visibility="Collapsed">
-                            <TextBlock Text="下载进度" 
+                            <TextBlock x:Name="DownloadProgressText" Text="下载进度" 
                                        Style="{StaticResource BodyStrongTextBlockStyle}"/>
                             <ProgressBar x:Name="DownloadProgressBar" 
                                          Minimum="0" Maximum="100" Value="0"

@@ -18,6 +18,7 @@ A lightweight Windows application to check and update NVIDIA GPU drivers without
 - 🔔 **Windows Notifications** - Get notified when updates are available
 - ⏰ **Periodic Update Checks** - Automatic background checking
 - 🎨 **Modern UI** - Built with WinUI 3 and Fluent Design
+- 🌏 **Multi-language Support** - English and Chinese (Simplified)
 
 ## Requirements
 
@@ -101,7 +102,7 @@ NvwUpd/
 - [x] Windows Notifications
 - [ ] Test on out-of-date cards
 - [x] Setup executable
-- [ ] Localization
+- [x] Localization (Chinese & English)
 
 ## Contributing
 
