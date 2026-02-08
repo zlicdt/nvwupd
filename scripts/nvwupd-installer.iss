@@ -3,7 +3,7 @@
 
 #define MyAppName "NvwUpd"
 #define MyAppDisplayName "NVIDIA Driver Updater"
-#define MyAppVersion "1.4.0"
+#define MyAppVersion "1.5.0"
 #define MyAppPublisher "zlicdt"
 #define MyAppExeName "NvwUpd.exe"
 
@@ -85,3 +85,4 @@ begin
 
   Result := True;
 end;
+

@@ -15,9 +15,9 @@
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>1.4.0</Version>
-    <FileVersion>1.4.0</FileVersion>
-    <AssemblyVersion>1.4.0</AssemblyVersion>
+    <Version>1.5.0</Version>
+    <FileVersion>1.5.0</FileVersion>
+    <AssemblyVersion>1.5.0</AssemblyVersion>
     <AssemblyTitle>NVIDIA Driver Updater</AssemblyTitle>
     <Description>Automatically check and update NVIDIA drivers</Description>
   </PropertyGroup>
@@ -49,6 +49,7 @@
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 </Project>
+
 
 
 
