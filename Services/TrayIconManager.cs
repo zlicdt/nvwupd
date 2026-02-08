@@ -77,10 +77,11 @@ public sealed class TrayIconManager : IDisposable
 
     private void CreateMenu()
     {
+        var loc = LocalizationService.Instance;
         _menu = CreatePopupMenu();
-        AppendMenu(_menu, 0, MenuOpen, "打开主窗口");
-        AppendMenu(_menu, 0, MenuCheck, "检查更新");
-        AppendMenu(_menu, 0, MenuExit, "退出");
+        AppendMenu(_menu, 0, MenuOpen, loc.GetString("TrayOpenWindow"));
+        AppendMenu(_menu, 0, MenuCheck, loc.GetString("TrayCheckUpdate"));
+        AppendMenu(_menu, 0, MenuExit, loc.GetString("TrayExit"));
     }
 
     private void AddTrayIcon()

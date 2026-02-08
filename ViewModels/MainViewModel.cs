@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using NvwUpd.Core;
 using NvwUpd.Models;
+using NvwUpd.Services;
 
 namespace NvwUpd.ViewModels;
 
@@ -38,7 +39,7 @@ public partial class MainViewModel : ViewModelBase
     private string _downloadPath = string.Empty;
 
     [ObservableProperty]
-    private string _statusMessage = "正在初始化...";
+    private string _statusMessage = LocalizationService.Instance.GetString("Initializing");
 
     public MainViewModel(
         IGpuDetector gpuDetector,
@@ -56,7 +57,7 @@ public partial class MainViewModel : ViewModelBase
     public async Task InitializeAsync()
     {
         IsLoading = true;
-        StatusMessage = "正在检测 GPU...";
+        StatusMessage = LocalizationService.Instance.GetString("DetectingGpu");
 
         try
         {
@@ -64,17 +65,17 @@ public partial class MainViewModel : ViewModelBase
 
             if (GpuInfo != null)
             {
-                StatusMessage = $"已检测到 {GpuInfo.Name}";
+                StatusMessage = LocalizationService.Instance.GetString("GpuDetected", GpuInfo.Name);
             }
             else
             {
-                StatusMessage = "未检测到 NVIDIA GPU";
+                StatusMessage = LocalizationService.Instance.GetString("NoNvidiaGpuDetected");
             }
         }
         catch (Exception ex)
         {
             SetError(ex.Message);
-            StatusMessage = "GPU 检测失败";
+            StatusMessage = LocalizationService.Instance.GetString("GpuDetectionFailed");
         }
         finally
         {
@@ -89,7 +90,7 @@ public partial class MainViewModel : ViewModelBase
 
         IsLoading = true;
         HasUpdate = false;
-        StatusMessage = "正在检查更新...";
+        StatusMessage = LocalizationService.Instance.GetString("CheckingForUpdates");
 
         try
         {
@@ -99,18 +100,18 @@ public partial class MainViewModel : ViewModelBase
             {
                 HasUpdate = IsNewerVersion(LatestDriver.Version, GpuInfo.DriverVersion);
                 StatusMessage = HasUpdate 
-                    ? $"发现新版本: {LatestDriver.Version}" 
-                    : "当前已是最新版本";
+                    ? LocalizationService.Instance.GetString("NewVersionFoundWithVersion", LatestDriver.Version) 
+                    : LocalizationService.Instance.GetString("AlreadyLatest");
             }
             else
             {
-                StatusMessage = "无法获取驱动信息";
+                StatusMessage = LocalizationService.Instance.GetString("CannotGetDriverInfoShort");
             }
         }
         catch (Exception ex)
         {
             SetError(ex.Message);
-            StatusMessage = "检查更新失败";
+            StatusMessage = LocalizationService.Instance.GetString("CheckUpdateFailedShort");
         }
         finally
         {
@@ -131,12 +132,12 @@ public partial class MainViewModel : ViewModelBase
 
         try
         {
-            StatusMessage = "正在下载驱动...";
+            StatusMessage = LocalizationService.Instance.GetString("DownloadingDriver");
             
             var progress = new Progress<double>(p =>
             {
                 DownloadProgress = p;
-                StatusMessage = $"正在下载... {p:P0}";
+                StatusMessage = LocalizationService.Instance.GetString("Downloading", $"{p:P0}");
             });
 
             var downloadResult = await _driverDownloader.DownloadDriverAsync(
@@ -147,20 +148,20 @@ public partial class MainViewModel : ViewModelBase
 
             DownloadPath = downloadResult.FilePath;
 
-            StatusMessage = "正在安装驱动...";
+            StatusMessage = LocalizationService.Instance.GetString("InstallingDriver");
             await _driverInstaller.InstallDriverAsync(downloadResult.FilePath);
 
-            StatusMessage = "驱动安装完成！建议重启计算机。";
+            StatusMessage = LocalizationService.Instance.GetString("InstallComplete");
             HasUpdate = false;
         }
         catch (OperationCanceledException)
         {
-            StatusMessage = "用户取消了安装";
+            StatusMessage = LocalizationService.Instance.GetString("UserCancelled");
         }
         catch (Exception ex)
         {
             SetError(ex.Message);
-            StatusMessage = "更新失败";
+            StatusMessage = LocalizationService.Instance.GetString("UpdateFailedShort");
         }
         finally
         {
