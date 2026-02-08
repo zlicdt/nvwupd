@@ -46,6 +46,13 @@ jobs:
           Compress-Archive -Path "$out\\*" -DestinationPath $zip
           Compress-Archive -Path "$outRuntime\\*" -DestinationPath $zipRuntime
 
+      - name: Build Installer (Inno Setup)
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart("v")
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=$version /O"." scripts\nvwupd-installer.iss
+          if ($LASTEXITCODE -ne 0) { throw "Inno Setup build failed" }
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -53,3 +60,4 @@ jobs:
           files: |
             NvwUpd-${{ github.ref_name }}-win-x64.zip
             NvwUpd-${{ github.ref_name }}-win-x64-runtime.zip
+            NvwUpd-Setup-*.exe
