@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" use="preserve" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- Window Title -->
+  <data name="AppTitle" xml:space="preserve">
+    <value>NVIDIA Driver Updater</value>
+  </data>
+  
+  <!-- Main Window -->
+  <data name="MainTitle" xml:space="preserve">
+    <value>NVIDIA Driver Updater</value>
+  </data>
+  <data name="StatusDetecting" xml:space="preserve">
+    <value>Detecting GPU information...</value>
+  </data>
+  <data name="StatusLoaded" xml:space="preserve">
+    <value>GPU information loaded</value>
+  </data>
+  <data name="StatusNoGpu" xml:space="preserve">
+    <value>No NVIDIA GPU detected</value>
+  </data>
+  <data name="StatusDetectFailed" xml:space="preserve">
+    <value>Detection failed: {0}</value>
+  </data>
+  <data name="SettingsButton" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  
+  <!-- GPU Info Card -->
+  <data name="GpuInfo" xml:space="preserve">
+    <value>GPU Information</value>
+  </data>
+  <data name="GpuLabel" xml:space="preserve">
+    <value>GPU:</value>
+  </data>
+  <data name="GpuDetecting" xml:space="preserve">
+    <value>Detecting...</value>
+  </data>
+  <data name="CurrentVersionLabel" xml:space="preserve">
+    <value>Current Driver Version:</value>
+  </data>
+  
+  <!-- Update Card -->
+  <data name="NewVersionAvailable" xml:space="preserve">
+    <value>New Driver Version Available!</value>
+  </data>
+  <data name="LatestVersionLabel" xml:space="preserve">
+    <value>Latest Version:</value>
+  </data>
+  <data name="ReleaseDateLabel" xml:space="preserve">
+    <value>Release Date:</value>
+  </data>
+  <data name="SelectDriverType" xml:space="preserve">
+    <value>Select Driver Type</value>
+  </data>
+  <data name="GameReadyDriver" xml:space="preserve">
+    <value>Game Ready Driver (Recommended)</value>
+  </data>
+  <data name="GameReadyDescription" xml:space="preserve">
+    <value>Optimized for latest games, providing the best gaming experience</value>
+  </data>
+  <data name="StudioDriver" xml:space="preserve">
+    <value>Studio Driver</value>
+  </data>
+  <data name="StudioDescription" xml:space="preserve">
+    <value>Optimized for creative applications, providing a more stable work environment</value>
+  </data>
+  
+  <!-- Download Progress -->
+  <data name="DownloadProgress" xml:space="preserve">
+    <value>Download Progress</value>
+  </data>
+  <data name="StopDownload" xml:space="preserve">
+    <value>Stop Download</value>
+  </data>
+  <data name="ResumeDownload" xml:space="preserve">
+    <value>Resume Download</value>
+  </data>
+  
+  <!-- Buttons -->
+  <data name="CheckUpdate" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>Update Now</value>
+  </data>
+  
+  <!-- Status Messages -->
+  <data name="StatusCheckingUpdate" xml:space="preserve">
+    <value>Checking for updates...</value>
+  </data>
+  <data name="StatusNewVersionFound" xml:space="preserve">
+    <value>New driver version found!</value>
+  </data>
+  <data name="StatusAlreadyLatest" xml:space="preserve">
+    <value>You already have the latest version</value>
+  </data>
+  <data name="StatusCannotGetDriver" xml:space="preserve">
+    <value>Unable to get latest driver information</value>
+  </data>
+  <data name="StatusCheckFailed" xml:space="preserve">
+    <value>Update check failed: {0}</value>
+  </data>
+  <data name="StatusResuming" xml:space="preserve">
+    <value>Detected {0} already downloaded, preparing to resume...</value>
+  </data>
+  <data name="StatusDownloading" xml:space="preserve">
+    <value>Downloading driver...</value>
+  </data>
+  <data name="StatusDownloadingProgress" xml:space="preserve">
+    <value>Downloading... {0}</value>
+  </data>
+  <data name="StatusNoResume" xml:space="preserve">
+    <value>Server does not support resume, restarting download</value>
+  </data>
+  <data name="StatusInstalling" xml:space="preserve">
+    <value>Installing driver...</value>
+  </data>
+  <data name="StatusInstallComplete" xml:space="preserve">
+    <value>Driver installation complete! Restart recommended.</value>
+  </data>
+  <data name="StatusDownloadStopped" xml:space="preserve">
+    <value>Download stopped, can resume later</value>
+  </data>
+  <data name="StatusDownloadInterrupted" xml:space="preserve">
+    <value>Download interrupted: {0}</value>
+  </data>
+  <data name="StatusUpdateFailed" xml:space="preserve">
+    <value>Update failed: {0}</value>
+  </data>
+  
+  <!-- Settings Dialog -->
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="CheckIntervalLabel" xml:space="preserve">
+    <value>Auto-check Interval (hours)</value>
+  </data>
+  <data name="AutoStartLabel" xml:space="preserve">
+    <value>Start with Windows</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>Language / 语言</value>
+  </data>
+  <data name="SaveButton" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="RestartRequired" xml:space="preserve">
+    <value>Language change will take effect after restarting the app</value>
+  </data>
+  
+  <!-- Tray Icon -->
+  <data name="TrayTooltip" xml:space="preserve">
+    <value>NvwUpd - NVIDIA Driver Updater</value>
+  </data>
+  <data name="TrayOpen" xml:space="preserve">
+    <value>Open Main Window</value>
+  </data>
+  <data name="TrayCheck" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="TrayExit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  
+  <!-- Notifications -->
+  <data name="NotificationUpdateAvailable" xml:space="preserve">
+    <value>🎮 NVIDIA Driver Update Available</value>
+  </data>
+  <data name="NotificationNewVersion" xml:space="preserve">
+    <value>New version {0} found</value>
+  </data>
+  <data name="NotificationCurrentVersion" xml:space="preserve">
+    <value>Current version: {0}</value>
+  </data>
+  <data name="NotificationViewDetails" xml:space="preserve">
+    <value>View Details</value>
+  </data>
+  <data name="NotificationRemindLater" xml:space="preserve">
+    <value>Remind Later</value>
+  </data>
+  
+  <!-- Language Names -->
+  <data name="LanguageZhCN" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="LanguageEnUS" xml:space="preserve">
+    <value>English</value>
+  </data>
+</root>

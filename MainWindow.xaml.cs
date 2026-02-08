@@ -21,6 +21,7 @@ public sealed partial class MainWindow : Window
     private readonly IUpdateChecker _updateChecker;
     private readonly ISettingsService _settingsService;
     private readonly IStartupService _startupService;
+    private readonly ILocalizationService _localizationService;
 
     private GpuInfo? _gpuInfo;
     private DriverInfo? _latestDriver;
@@ -52,6 +53,10 @@ public sealed partial class MainWindow : Window
         _updateChecker = App.Services.GetRequiredService<IUpdateChecker>();
         _startupService = App.Services.GetRequiredService<IStartupService>();
         _settingsService = App.Services.GetRequiredService<ISettingsService>();
+        _localizationService = App.Services.GetRequiredService<ILocalizationService>();
+
+        // Initialize localized UI text
+        InitializeLocalizedUI();
 
         _trayIcon = new TrayIconManager(
             this,
@@ -72,6 +77,12 @@ public sealed partial class MainWindow : Window
         InitializeAsync();
     }
 
+    private void InitializeLocalizedUI()
+    {
+        Title = _localizationService.GetString("AppTitle");
+        // Note: XAML elements will be updated in InitializeAsync and other methods
+    }
+
     private void AppWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
     {
         if (!_isExplicitExit)
@@ -89,6 +100,10 @@ public sealed partial class MainWindow : Window
 
     private async void InitializeAsync()
     {
+        // Update UI with localized strings
+        StatusText.Text = _localizationService.GetString("StatusDetecting");
+        GpuNameText.Text = _localizationService.GetString("GpuDetecting");
+        
         try
         {
             Console.WriteLine("[MainWindow] Detecting GPU...");
@@ -102,18 +117,18 @@ public sealed partial class MainWindow : Window
                 
                 GpuNameText.Text = _gpuInfo.Name;
                 CurrentVersionText.Text = _gpuInfo.DriverVersion;
-                StatusText.Text = "GPU 信息已加载";
+                StatusText.Text = _localizationService.GetString("StatusLoaded");
             }
             else
             {
                 Console.WriteLine("[MainWindow] No NVIDIA GPU detected");
-                StatusText.Text = "未检测到 NVIDIA GPU";
+                StatusText.Text = _localizationService.GetString("StatusNoGpu");
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"[MainWindow] Detection failed: {ex.Message}");
-            StatusText.Text = $"检测失败: {ex.Message}";
+            StatusText.Text = string.Format(_localizationService.GetString("StatusDetectFailed"), ex.Message);
         }
 
         await LoadSettingsAsync();
@@ -147,20 +162,34 @@ public sealed partial class MainWindow : Window
 
         var startupCheckbox = new CheckBox
         {
-            Content = "开机自启动",
+            Content = _localizationService.GetString("AutoStartLabel"),
             IsChecked = _startupService.IsEnabled
         };
 
+        var currentLanguage = string.IsNullOrEmpty(_settings.Language) 
+            ? _localizationService.GetCurrentLanguage() 
+            : _settings.Language;
+        
+        var languageComboBox = new ComboBox
+        {
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            SelectedIndex = currentLanguage.StartsWith("zh") ? 0 : 1
+        };
+        languageComboBox.Items.Add(_localizationService.GetString("LanguageZhCN"));
+        languageComboBox.Items.Add(_localizationService.GetString("LanguageEnUS"));
+
         var panel = new StackPanel { Spacing = 12 };
-        panel.Children.Add(new TextBlock { Text = "自动检查间隔（小时）" });
+        panel.Children.Add(new TextBlock { Text = _localizationService.GetString("CheckIntervalLabel") });
         panel.Children.Add(numberBox);
         panel.Children.Add(startupCheckbox);
+        panel.Children.Add(new TextBlock { Text = _localizationService.GetString("LanguageLabel"), Margin = new Thickness(0, 12, 0, 0) });
+        panel.Children.Add(languageComboBox);
 
         var dialog = new ContentDialog
         {
-            Title = "设置",
-            PrimaryButtonText = "保存",
-            CloseButtonText = "取消",
+            Title = _localizationService.GetString("SettingsTitle"),
+            PrimaryButtonText = _localizationService.GetString("SaveButton"),
+            CloseButtonText = _localizationService.GetString("CancelButton"),
             Content = panel
         };
 
@@ -182,6 +211,13 @@ public sealed partial class MainWindow : Window
         }
 
         _settings.CheckIntervalHours = hours;
+        
+        // Handle language change
+        var newLanguage = languageComboBox.SelectedIndex == 0 ? "zh-CN" : "en-US";
+        var languageChanged = _settings.Language != newLanguage && 
+                             (_settings.Language != "" || newLanguage != currentLanguage);
+        _settings.Language = newLanguage;
+        
         await _settingsService.SaveAsync(_settings);
         ApplyCheckInterval(hours);
         
@@ -196,6 +232,24 @@ public sealed partial class MainWindow : Window
                 Console.WriteLine($"[Settings] Failed to set startup: {ex.Message}");
             }
         }
+        
+        // Show restart message if language changed
+        if (languageChanged)
+        {
+            var restartDialog = new ContentDialog
+            {
+                Title = _localizationService.GetString("SettingsTitle"),
+                Content = _localizationService.GetString("RestartRequired"),
+                CloseButtonText = "OK"
+            };
+            
+            if (Content is FrameworkElement rootElement)
+            {
+                restartDialog.XamlRoot = rootElement.XamlRoot;
+            }
+            
+            await restartDialog.ShowAsync();
+        }
     }
 
     private async void CheckUpdateButton_Click(object sender, RoutedEventArgs e)
@@ -203,7 +257,7 @@ public sealed partial class MainWindow : Window
         if (_gpuInfo == null) return;
 
         CheckUpdateButton.IsEnabled = false;
-        StatusText.Text = "正在检查更新...";
+        StatusText.Text = _localizationService.GetString("StatusCheckingUpdate");
         Console.WriteLine("[MainWindow] Checking for updates...");
 
         try
@@ -224,25 +278,25 @@ public sealed partial class MainWindow : Window
                 {
                     UpdateCard.Visibility = Visibility.Visible;
                     UpdateButton.IsEnabled = true;
-                    StatusText.Text = "发现新版本驱动！";
+                    StatusText.Text = _localizationService.GetString("StatusNewVersionFound");
                     Console.WriteLine($"[MainWindow] Update available: {_gpuInfo.DriverVersion} -> {_latestDriver.Version}");
                 }
                 else
                 {
-                    StatusText.Text = "当前已是最新版本";
+                    StatusText.Text = _localizationService.GetString("StatusAlreadyLatest");
                     UpdateCard.Visibility = Visibility.Collapsed;
                     Console.WriteLine("[MainWindow] Already up to date");
                 }
             }
             else
             {
-                StatusText.Text = "无法获取最新驱动信息";
+                StatusText.Text = _localizationService.GetString("StatusCannotGetDriver");
                 Console.WriteLine("[MainWindow] Failed to get driver info (null response)");
             }
         }
         catch (Exception ex)
         {
-            StatusText.Text = $"检查更新失败: {ex.Message}";
+            StatusText.Text = string.Format(_localizationService.GetString("StatusCheckFailed"), ex.Message);
             Console.WriteLine($"[MainWindow] Check update failed: {ex.Message}");
         }
         finally
@@ -283,7 +337,7 @@ public sealed partial class MainWindow : Window
         UpdateButton.IsEnabled = false;
         CheckUpdateButton.IsEnabled = false;
         DownloadControlButton.Visibility = Visibility.Visible;
-        DownloadControlButton.Content = "中断下载";
+        DownloadControlButton.Content = _localizationService.GetString("StopDownload");
         _canResume = false;
         _isDownloading = true;
 
@@ -315,19 +369,19 @@ public sealed partial class MainWindow : Window
             var resumedProgress = (double)existingSize / _latestDriver.FileSize;
             DownloadProgressBar.Value = resumedProgress * 100;
             DownloadPercentText.Text = $"{resumedProgress:P0}";
-            StatusText.Text = $"检测到已下载 {resumedProgress:P0}，准备继续下载...";
+            StatusText.Text = string.Format(_localizationService.GetString("StatusResuming"), $"{resumedProgress:P0}");
         }
 
         try
         {
-            StatusText.Text = "正在下载驱动...";
+            StatusText.Text = _localizationService.GetString("StatusDownloading");
             Console.WriteLine("[MainWindow] Downloading driver...");
             
             var progress = new Progress<double>(p =>
             {
                 DownloadProgressBar.Value = p * 100;
                 DownloadPercentText.Text = $"{p:P0}";
-                StatusText.Text = $"正在下载... {p:P0}";
+                StatusText.Text = string.Format(_localizationService.GetString("StatusDownloadingProgress"), $"{p:P0}");
             });
             
             var downloadResult = await _driverDownloader.DownloadDriverAsync(
@@ -342,14 +396,14 @@ public sealed partial class MainWindow : Window
 
             if (downloadResult.WasRestarted && existingSize > 0)
             {
-                StatusText.Text = "服务器不支持断点续传，已重新下载";
+                StatusText.Text = _localizationService.GetString("StatusNoResume");
             }
 
-            StatusText.Text = "正在安装驱动...";
+            StatusText.Text = _localizationService.GetString("StatusInstalling");
             Console.WriteLine("[MainWindow] Installing driver...");
             await _driverInstaller.InstallDriverAsync(downloadResult.FilePath);
 
-            StatusText.Text = "驱动安装完成！建议重启计算机。";
+            StatusText.Text = _localizationService.GetString("StatusInstallComplete");
             Console.WriteLine("[MainWindow] Installation complete!");
 
             _canResume = false;
@@ -357,22 +411,22 @@ public sealed partial class MainWindow : Window
         }
         catch (OperationCanceledException) when (_downloadCts?.IsCancellationRequested == true)
         {
-            StatusText.Text = "下载已中断，可继续下载";
+            StatusText.Text = _localizationService.GetString("StatusDownloadStopped");
             _canResume = true;
         }
         catch (HttpRequestException ex)
         {
-            StatusText.Text = $"下载中断：{ex.Message}";
+            StatusText.Text = string.Format(_localizationService.GetString("StatusDownloadInterrupted"), ex.Message);
             _canResume = true;
         }
         catch (IOException ex)
         {
-            StatusText.Text = $"下载中断：{ex.Message}";
+            StatusText.Text = string.Format(_localizationService.GetString("StatusDownloadInterrupted"), ex.Message);
             _canResume = true;
         }
         catch (Exception ex)
         {
-            StatusText.Text = $"更新失败: {ex.Message}";
+            StatusText.Text = string.Format(_localizationService.GetString("StatusUpdateFailed"), ex.Message);
             Console.WriteLine($"[MainWindow] Update failed: {ex.Message}");
             Console.WriteLine($"[MainWindow] Stack trace: {ex.StackTrace}");
             _canResume = false;
@@ -382,7 +436,7 @@ public sealed partial class MainWindow : Window
             _isDownloading = false;
             if (_canResume)
             {
-                DownloadControlButton.Content = "继续下载";
+                DownloadControlButton.Content = _localizationService.GetString("ResumeDownload");
                 UpdateButton.IsEnabled = true;
                 CheckUpdateButton.IsEnabled = true;
             }

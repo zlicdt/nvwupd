@@ -48,6 +48,7 @@ public partial class App : Application
                 services.AddSingleton<IUpdateChecker, UpdateChecker>();
                 services.AddSingleton<ISettingsService, SettingsService>();
                 services.AddSingleton<IStartupService, StartupService>();
+                services.AddSingleton<ILocalizationService, LocalizationService>();
 
                 // ViewModels
                 services.AddTransient<MainViewModel>();
@@ -58,6 +59,16 @@ public partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        // Apply saved language setting
+        var settingsService = Services.GetRequiredService<ISettingsService>();
+        var localizationService = Services.GetRequiredService<ILocalizationService>();
+        
+        var settings = settingsService.LoadAsync().GetAwaiter().GetResult();
+        if (!string.IsNullOrEmpty(settings.Language))
+        {
+            localizationService.SetLanguage(settings.Language);
+        }
+        
         var isBackground = IsBackgroundLaunch(args.Arguments);
 
         _window = new MainWindow();

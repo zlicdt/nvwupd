@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using Microsoft.UI.Xaml;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace NvwUpd.Services;
 
@@ -34,6 +35,7 @@ public sealed class TrayIconManager : IDisposable
     private readonly Action _onExit;
     private readonly WndProc _wndProc;
     private readonly IntPtr _oldWndProc;
+    private readonly ILocalizationService _localizationService;
 
     private IntPtr _menu;
     private IntPtr _icon;
@@ -45,6 +47,7 @@ public sealed class TrayIconManager : IDisposable
         _onOpen = onOpen;
         _onCheck = onCheck;
         _onExit = onExit;
+        _localizationService = App.Services.GetRequiredService<ILocalizationService>();
 
         _wndProc = WndProcHandler;
         _oldWndProc = SetWindowLongPtr(_hwnd, -4, Marshal.GetFunctionPointerForDelegate(_wndProc));
@@ -78,9 +81,9 @@ public sealed class TrayIconManager : IDisposable
     private void CreateMenu()
     {
         _menu = CreatePopupMenu();
-        AppendMenu(_menu, 0, MenuOpen, "打开主窗口");
-        AppendMenu(_menu, 0, MenuCheck, "检查更新");
-        AppendMenu(_menu, 0, MenuExit, "退出");
+        AppendMenu(_menu, 0, MenuOpen, _localizationService.GetString("TrayOpen"));
+        AppendMenu(_menu, 0, MenuCheck, _localizationService.GetString("TrayCheck"));
+        AppendMenu(_menu, 0, MenuExit, _localizationService.GetString("TrayExit"));
     }
 
     private void AddTrayIcon()
@@ -111,7 +114,7 @@ public sealed class TrayIconManager : IDisposable
             uFlags = NifMessage | NifIcon | NifTip,
             uCallbackMessage = WmTrayIcon,
             hIcon = _icon,
-            szTip = "NvwUpd - NVIDIA Driver Updater"
+            szTip = _localizationService.GetString("TrayTooltip")
         };
 
         _isAdded = Shell_NotifyIcon(NimAdd, ref data);

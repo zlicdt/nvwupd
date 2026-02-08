@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" use="preserve" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- Window Title -->
+  <data name="AppTitle" xml:space="preserve">
+    <value>NVIDIA Driver Updater</value>
+  </data>
+  
+  <!-- Main Window -->
+  <data name="MainTitle" xml:space="preserve">
+    <value>NVIDIA 驱动更新工具</value>
+  </data>
+  <data name="StatusDetecting" xml:space="preserve">
+    <value>正在检测 GPU 信息...</value>
+  </data>
+  <data name="StatusLoaded" xml:space="preserve">
+    <value>GPU 信息已加载</value>
+  </data>
+  <data name="StatusNoGpu" xml:space="preserve">
+    <value>未检测到 NVIDIA GPU</value>
+  </data>
+  <data name="StatusDetectFailed" xml:space="preserve">
+    <value>检测失败: {0}</value>
+  </data>
+  <data name="SettingsButton" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  
+  <!-- GPU Info Card -->
+  <data name="GpuInfo" xml:space="preserve">
+    <value>显卡信息</value>
+  </data>
+  <data name="GpuLabel" xml:space="preserve">
+    <value>GPU:</value>
+  </data>
+  <data name="GpuDetecting" xml:space="preserve">
+    <value>检测中...</value>
+  </data>
+  <data name="CurrentVersionLabel" xml:space="preserve">
+    <value>当前驱动版本:</value>
+  </data>
+  
+  <!-- Update Card -->
+  <data name="NewVersionAvailable" xml:space="preserve">
+    <value>发现新版本驱动！</value>
+  </data>
+  <data name="LatestVersionLabel" xml:space="preserve">
+    <value>最新版本:</value>
+  </data>
+  <data name="ReleaseDateLabel" xml:space="preserve">
+    <value>发布日期:</value>
+  </data>
+  <data name="SelectDriverType" xml:space="preserve">
+    <value>选择驱动类型</value>
+  </data>
+  <data name="GameReadyDriver" xml:space="preserve">
+    <value>Game Ready Driver (推荐)</value>
+  </data>
+  <data name="GameReadyDescription" xml:space="preserve">
+    <value>针对最新游戏优化，提供最佳游戏体验</value>
+  </data>
+  <data name="StudioDriver" xml:space="preserve">
+    <value>Studio Driver</value>
+  </data>
+  <data name="StudioDescription" xml:space="preserve">
+    <value>针对创意应用优化，提供更稳定的工作环境</value>
+  </data>
+  
+  <!-- Download Progress -->
+  <data name="DownloadProgress" xml:space="preserve">
+    <value>下载进度</value>
+  </data>
+  <data name="StopDownload" xml:space="preserve">
+    <value>中断下载</value>
+  </data>
+  <data name="ResumeDownload" xml:space="preserve">
+    <value>继续下载</value>
+  </data>
+  
+  <!-- Buttons -->
+  <data name="CheckUpdate" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>立即更新</value>
+  </data>
+  
+  <!-- Status Messages -->
+  <data name="StatusCheckingUpdate" xml:space="preserve">
+    <value>正在检查更新...</value>
+  </data>
+  <data name="StatusNewVersionFound" xml:space="preserve">
+    <value>发现新版本驱动！</value>
+  </data>
+  <data name="StatusAlreadyLatest" xml:space="preserve">
+    <value>当前已是最新版本</value>
+  </data>
+  <data name="StatusCannotGetDriver" xml:space="preserve">
+    <value>无法获取最新驱动信息</value>
+  </data>
+  <data name="StatusCheckFailed" xml:space="preserve">
+    <value>检查更新失败: {0}</value>
+  </data>
+  <data name="StatusResuming" xml:space="preserve">
+    <value>检测到已下载 {0}，准备继续下载...</value>
+  </data>
+  <data name="StatusDownloading" xml:space="preserve">
+    <value>正在下载驱动...</value>
+  </data>
+  <data name="StatusDownloadingProgress" xml:space="preserve">
+    <value>正在下载... {0}</value>
+  </data>
+  <data name="StatusNoResume" xml:space="preserve">
+    <value>服务器不支持断点续传，已重新下载</value>
+  </data>
+  <data name="StatusInstalling" xml:space="preserve">
+    <value>正在安装驱动...</value>
+  </data>
+  <data name="StatusInstallComplete" xml:space="preserve">
+    <value>驱动安装完成！建议重启计算机。</value>
+  </data>
+  <data name="StatusDownloadStopped" xml:space="preserve">
+    <value>下载已中断，可继续下载</value>
+  </data>
+  <data name="StatusDownloadInterrupted" xml:space="preserve">
+    <value>下载中断：{0}</value>
+  </data>
+  <data name="StatusUpdateFailed" xml:space="preserve">
+    <value>更新失败: {0}</value>
+  </data>
+  
+  <!-- Settings Dialog -->
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="CheckIntervalLabel" xml:space="preserve">
+    <value>自动检查间隔（小时）</value>
+  </data>
+  <data name="AutoStartLabel" xml:space="preserve">
+    <value>开机自启动</value>
+  </data>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>语言 / Language</value>
+  </data>
+  <data name="SaveButton" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="RestartRequired" xml:space="preserve">
+    <value>语言更改将在重启应用后生效</value>
+  </data>
+  
+  <!-- Tray Icon -->
+  <data name="TrayTooltip" xml:space="preserve">
+    <value>NvwUpd - NVIDIA Driver Updater</value>
+  </data>
+  <data name="TrayOpen" xml:space="preserve">
+    <value>打开主窗口</value>
+  </data>
+  <data name="TrayCheck" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  <data name="TrayExit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  
+  <!-- Notifications -->
+  <data name="NotificationUpdateAvailable" xml:space="preserve">
+    <value>🎮 NVIDIA 驱动更新可用</value>
+  </data>
+  <data name="NotificationNewVersion" xml:space="preserve">
+    <value>发现新版本 {0}</value>
+  </data>
+  <data name="NotificationCurrentVersion" xml:space="preserve">
+    <value>当前版本: {0}</value>
+  </data>
+  <data name="NotificationViewDetails" xml:space="preserve">
+    <value>查看详情</value>
+  </data>
+  <data name="NotificationRemindLater" xml:space="preserve">
+    <value>稍后提醒</value>
+  </data>
+  
+  <!-- Language Names -->
+  <data name="LanguageZhCN" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="LanguageEnUS" xml:space="preserve">
+    <value>English</value>
+  </data>
+</root>

@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using NvwUpd.Models;
 
 namespace NvwUpd.Services;
@@ -14,9 +15,11 @@ public class NotificationService : INotificationService, IDisposable
     private static extern bool SetForegroundWindow(IntPtr hWnd);
 
     private bool _isInitialized;
+    private readonly ILocalizationService _localizationService;
 
     public NotificationService()
     {
+        _localizationService = App.Services.GetRequiredService<ILocalizationService>();
         Initialize();
     }
 
@@ -43,12 +46,12 @@ public class NotificationService : INotificationService, IDisposable
         {
             var builder = new AppNotificationBuilder()
                 .AddArgument("action", "viewUpdate")
-                .AddText("🎮 NVIDIA 驱动更新可用")
-                .AddText($"发现新版本 {driverInfo.Version}")
-                .AddText($"当前版本: {currentVersion}")
-                .AddButton(new AppNotificationButton("查看详情")
+                .AddText(_localizationService.GetString("NotificationUpdateAvailable"))
+                .AddText(string.Format(_localizationService.GetString("NotificationNewVersion"), driverInfo.Version))
+                .AddText(string.Format(_localizationService.GetString("NotificationCurrentVersion"), currentVersion))
+                .AddButton(new AppNotificationButton(_localizationService.GetString("NotificationViewDetails"))
                     .AddArgument("action", "viewUpdate"))
-                .AddButton(new AppNotificationButton("稍后提醒")
+                .AddButton(new AppNotificationButton(_localizationService.GetString("NotificationRemindLater"))
                     .AddArgument("action", "dismiss"));
 
             var notification = builder.BuildNotification();
