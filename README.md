@@ -100,7 +100,7 @@ NvwUpd/
 - [x] Periodic Update Checks
 - [x] Windows Notifications
 - [ ] Test on out-of-date cards
-- [ ] Setup executable
+- [x] Setup executable
 - [ ] Localization
 
 ## Contributing
