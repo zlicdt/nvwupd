@@ -173,7 +173,7 @@
   </data>
   <!-- Notification Service -->
   <data name="NotificationTitle" xml:space="preserve">
-    <value>🎮 NVIDIA Driver Update Available</value>
+    <value>NVIDIA Driver Update Available</value>
   </data>
   <data name="NotificationNewVersion" xml:space="preserve">
     <value>New version {0} found</value>

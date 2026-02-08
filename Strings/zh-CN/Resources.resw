@@ -173,7 +173,7 @@
   </data>
   <!-- Notification Service -->
   <data name="NotificationTitle" xml:space="preserve">
-    <value>🎮 NVIDIA 驱动更新可用</value>
+    <value>NVIDIA 驱动更新可用</value>
   </data>
   <data name="NotificationNewVersion" xml:space="preserve">
     <value>发现新版本 {0}</value>
