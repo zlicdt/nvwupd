@@ -5,6 +5,7 @@ using NvwUpd.Services;
 using NvwUpd.Core;
 using NvwUpd.ViewModels;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using Microsoft.UI.Windowing;
 
@@ -20,11 +21,15 @@ public partial class App : Application
 
     static App()
     {
+        // Apply --lang override before anything else
+        ApplyLanguageOverride();
+
         // Setup console logging to file
         var logPath = Path.Combine(AppContext.BaseDirectory, "debug.log");
         _logWriter = new StreamWriter(logPath, append: false) { AutoFlush = true };
         Console.SetOut(_logWriter);
         Console.WriteLine($"[App] Log started at {DateTime.Now}");
+        Console.WriteLine($"[App] CurrentUICulture: {CultureInfo.CurrentUICulture.Name}");
     }
     private readonly IHost _host;
 
@@ -106,5 +111,26 @@ public partial class App : Application
 
         var cliArgs = Environment.GetCommandLineArgs();
         return cliArgs.Any(arg => string.Equals(arg, "--background", StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static void ApplyLanguageOverride()
+    {
+        var cliArgs = Environment.GetCommandLineArgs();
+        for (int i = 0; i < cliArgs.Length - 1; i++)
+        {
+            if (string.Equals(cliArgs[i], "--lang", StringComparison.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    var culture = new CultureInfo(cliArgs[i + 1]);
+                    CultureInfo.CurrentUICulture = culture;
+                    CultureInfo.CurrentCulture = culture;
+                    CultureInfo.DefaultThreadCurrentUICulture = culture;
+                    CultureInfo.DefaultThreadCurrentCulture = culture;
+                }
+                catch { }
+                break;
+            }
+        }
     }
 }
