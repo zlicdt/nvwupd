@@ -2,7 +2,9 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$Version,
 
-    [string]$Project = "NvwUpd.csproj"
+    [string]$Project = "NvwUpd.csproj",
+
+    [string]$InnoScript = "scripts\nvwupd-installer.iss"
 )
 
 if (-not (Test-Path -Path $Project)) {
@@ -46,3 +48,18 @@ Set-Or-InsertProperty -Name "FileVersion" -Value $Version
 
 Set-Content -Path $Project -Value $xml -Encoding UTF8
 Write-Host "Updated ${Project}: Version=$Version, AssemblyVersion=$Version, FileVersion=$Version"
+
+# Update Inno Setup script version
+if (Test-Path -Path $InnoScript) {
+    $issContent = Get-Content -Path $InnoScript -Raw
+    $issPattern = '(#define MyAppVersion\s+")[^"]*(")'
+    if ($issContent -match $issPattern) {
+        $issContent = [regex]::Replace($issContent, $issPattern, "`${1}$Version`${2}")
+        Set-Content -Path $InnoScript -Value $issContent -Encoding UTF8
+        Write-Host "Updated ${InnoScript}: MyAppVersion=$Version"
+    } else {
+        Write-Warning "Could not find MyAppVersion in ${InnoScript}"
+    }
+} else {
+    Write-Warning "Inno Setup script not found: ${InnoScript}"
+}
