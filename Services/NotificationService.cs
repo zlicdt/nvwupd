@@ -41,14 +41,15 @@ public class NotificationService : INotificationService, IDisposable
 
         try
         {
+            var loc = LocalizationService.Instance;
             var builder = new AppNotificationBuilder()
                 .AddArgument("action", "viewUpdate")
-                .AddText("🎮 NVIDIA 驱动更新可用")
-                .AddText($"发现新版本 {driverInfo.Version}")
-                .AddText($"当前版本: {currentVersion}")
-                .AddButton(new AppNotificationButton("查看详情")
+                .AddText(loc.GetString("NotificationTitle"))
+                .AddText(loc.GetString("NotificationNewVersion", driverInfo.Version))
+                .AddText(loc.GetString("NotificationCurrentVersion", currentVersion))
+                .AddButton(new AppNotificationButton(loc.GetString("NotificationViewDetails"))
                     .AddArgument("action", "viewUpdate"))
-                .AddButton(new AppNotificationButton("稍后提醒")
+                .AddButton(new AppNotificationButton(loc.GetString("NotificationRemindLater"))
                     .AddArgument("action", "dismiss"));
 
             var notification = builder.BuildNotification();
