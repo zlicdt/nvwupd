@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <!-- Main Window -->
+  <data name="AppTitle" xml:space="preserve">
+    <value>NVIDIA Treiber-Aktualisierung</value>
+  </data>
+  <data name="StatusDetectingGpu" xml:space="preserve">
+    <value>GPU-Informationen werden erkannt...</value>
+  </data>
+  <data name="SettingsButton" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="GpuInfoTitle" xml:space="preserve">
+    <value>GPU-Informationen</value>
+  </data>
+  <data name="Detecting" xml:space="preserve">
+    <value>Erkennung läuft...</value>
+  </data>
+  <data name="CurrentDriverVersion" xml:space="preserve">
+    <value>Aktuelle Treiberversion:</value>
+  </data>
+  <data name="NewDriverFound" xml:space="preserve">
+    <value>Neue Treiberversion verfügbar!</value>
+  </data>
+  <data name="LatestVersion" xml:space="preserve">
+    <value>Neueste Version:</value>
+  </data>
+  <data name="ReleaseDate" xml:space="preserve">
+    <value>Veröffentlichungsdatum:</value>
+  </data>
+  <data name="SelectDriverType" xml:space="preserve">
+    <value>Treibertyp auswählen</value>
+  </data>
+  <data name="GameReadyDriverRecommended" xml:space="preserve">
+    <value>Game Ready Treiber (Empfohlen)</value>
+  </data>
+  <data name="GameReadyDriverDescription" xml:space="preserve">
+    <value>Optimiert für die neuesten Spiele und bietet das beste Spielerlebnis</value>
+  </data>
+  <data name="StudioDriverDescription" xml:space="preserve">
+    <value>Optimiert für Kreativanwendungen und bietet eine stabilere Arbeitsumgebung</value>
+  </data>
+  <data name="DownloadProgress" xml:space="preserve">
+    <value>Download-Fortschritt</value>
+  </data>
+  <data name="PauseDownload" xml:space="preserve">
+    <value>Download pausieren</value>
+  </data>
+  <data name="CheckUpdate" xml:space="preserve">
+    <value>Nach Updates suchen</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>Jetzt aktualisieren</value>
+  </data>
+  <!-- MainWindow.xaml.cs dynamic strings -->
+  <data name="GpuInfoLoaded" xml:space="preserve">
+    <value>GPU-Informationen geladen</value>
+  </data>
+  <data name="NoNvidiaGpuDetected" xml:space="preserve">
+    <value>Keine NVIDIA GPU erkannt</value>
+  </data>
+  <data name="DetectionFailed" xml:space="preserve">
+    <value>Erkennung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="StartupCheckbox" xml:space="preserve">
+    <value>Beim Systemstart starten</value>
+  </data>
+  <data name="CheckIntervalLabel" xml:space="preserve">
+    <value>Automatisches Prüfintervall (Stunden)</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="CheckingForUpdates" xml:space="preserve">
+    <value>Suche nach Updates...</value>
+  </data>
+  <data name="NewVersionFound" xml:space="preserve">
+    <value>Neue Treiberversion verfügbar!</value>
+  </data>
+  <data name="AlreadyLatest" xml:space="preserve">
+    <value>Bereits auf dem neuesten Stand</value>
+  </data>
+  <data name="CannotGetDriverInfo" xml:space="preserve">
+    <value>Neueste Treiberinformationen konnten nicht abgerufen werden</value>
+  </data>
+  <data name="CheckUpdateFailed" xml:space="preserve">
+    <value>Update-Prüfung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="ResumeDetected" xml:space="preserve">
+    <value>{0} bereits heruntergeladen erkannt, Fortsetzung wird vorbereitet...</value>
+  </data>
+  <data name="DownloadingDriver" xml:space="preserve">
+    <value>Treiber wird heruntergeladen...</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Wird heruntergeladen... {0}</value>
+  </data>
+  <data name="ServerNoResume" xml:space="preserve">
+    <value>Server unterstützt keine Fortsetzung, Download wurde neu gestartet</value>
+  </data>
+  <data name="InstallingDriver" xml:space="preserve">
+    <value>Treiber wird installiert...</value>
+  </data>
+  <data name="InstallComplete" xml:space="preserve">
+    <value>Treiberinstallation abgeschlossen! Ein Systemneustart wird empfohlen.</value>
+  </data>
+  <data name="DownloadPaused" xml:space="preserve">
+    <value>Download pausiert, kann fortgesetzt werden</value>
+  </data>
+  <data name="DownloadInterrupted" xml:space="preserve">
+    <value>Download unterbrochen: {0}</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>Aktualisierung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="ResumeDownload" xml:space="preserve">
+    <value>Download fortsetzen</value>
+  </data>
+  <!-- Tray Icon Menu -->
+  <data name="TrayOpenWindow" xml:space="preserve">
+    <value>Hauptfenster öffnen</value>
+  </data>
+  <data name="TrayCheckUpdate" xml:space="preserve">
+    <value>Nach Updates suchen</value>
+  </data>
+  <data name="TrayExit" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <!-- Notification Service -->
+  <data name="NotificationTitle" xml:space="preserve">
+    <value>NVIDIA Treiberupdate verfügbar</value>
+  </data>
+  <data name="NotificationNewVersion" xml:space="preserve">
+    <value>Neue Version {0} gefunden</value>
+  </data>
+  <data name="NotificationCurrentVersion" xml:space="preserve">
+    <value>Aktuelle Version: {0}</value>
+  </data>
+  <data name="NotificationViewDetails" xml:space="preserve">
+    <value>Details anzeigen</value>
+  </data>
+  <data name="NotificationRemindLater" xml:space="preserve">
+    <value>Später erinnern</value>
+  </data>
+  <!-- MainViewModel -->
+  <data name="Initializing" xml:space="preserve">
+    <value>Initialisierung...</value>
+  </data>
+  <data name="DetectingGpu" xml:space="preserve">
+    <value>GPU wird erkannt...</value>
+  </data>
+  <data name="GpuDetected" xml:space="preserve">
+    <value>{0} erkannt</value>
+  </data>
+  <data name="GpuDetectionFailed" xml:space="preserve">
+    <value>GPU-Erkennung fehlgeschlagen</value>
+  </data>
+  <data name="NewVersionFoundWithVersion" xml:space="preserve">
+    <value>Neue Version gefunden: {0}</value>
+  </data>
+  <data name="CannotGetDriverInfoShort" xml:space="preserve">
+    <value>Treiberinformationen konnten nicht abgerufen werden</value>
+  </data>
+  <data name="CheckUpdateFailedShort" xml:space="preserve">
+    <value>Update-Prüfung fehlgeschlagen</value>
+  </data>
+  <data name="UserCancelled" xml:space="preserve">
+    <value>Installation vom Benutzer abgebrochen</value>
+  </data>
+  <data name="UpdateFailedShort" xml:space="preserve">
+    <value>Aktualisierung fehlgeschlagen</value>
+  </data>
+</root>
