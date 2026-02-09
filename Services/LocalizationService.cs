@@ -23,12 +23,12 @@ public class LocalizationService
         var culture = CultureInfo.CurrentUICulture.Name;
         var basePath = Path.Combine(AppContext.BaseDirectory, "Strings");
 
-        // Try exact match first (e.g., "zh-CN"), then language only (e.g., "zh"), then fallback to "zh-CN"
+        // Try exact match first (e.g., "zh-CN"), then language only (e.g., "zh"), then fallback to "en"
         var candidates = new[]
         {
             culture,
             culture.Split('-')[0],
-            "zh-CN"
+            "en"
         };
 
         foreach (var candidate in candidates)
