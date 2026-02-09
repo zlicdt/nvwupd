@@ -149,7 +149,7 @@ public partial class MainViewModel : ViewModelBase
             DownloadPath = downloadResult.FilePath;
 
             StatusMessage = LocalizationService.Instance.GetString("InstallingDriver");
-            await _driverInstaller.InstallDriverAsync(downloadResult.FilePath);
+            await _driverInstaller.InstallDriverAsync(downloadResult.FilePath, silent: false);
 
             StatusMessage = LocalizationService.Instance.GetString("InstallComplete");
             HasUpdate = false;

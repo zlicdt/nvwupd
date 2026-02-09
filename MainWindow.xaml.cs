@@ -372,7 +372,7 @@ public sealed partial class MainWindow : Window
 
             StatusText.Text = _loc.GetString("InstallingDriver");
             Console.WriteLine("[MainWindow] Installing driver...");
-            await _driverInstaller.InstallDriverAsync(downloadResult.FilePath);
+            await _driverInstaller.InstallDriverAsync(downloadResult.FilePath, silent: false);
 
             StatusText.Text = _loc.GetString("InstallComplete");
             Console.WriteLine("[MainWindow] Installation complete!");
