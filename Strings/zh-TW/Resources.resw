@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <!-- Main Window -->
+  <data name="AppTitle" xml:space="preserve">
+    <value>NVIDIA 驅動更新工具</value>
+  </data>
+  <data name="StatusDetectingGpu" xml:space="preserve">
+    <value>正在偵測 GPU 資訊...</value>
+  </data>
+  <data name="SettingsButton" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="GpuInfoTitle" xml:space="preserve">
+    <value>顯示卡資訊</value>
+  </data>
+  <data name="Detecting" xml:space="preserve">
+    <value>偵測中...</value>
+  </data>
+  <data name="CurrentDriverVersion" xml:space="preserve">
+    <value>目前驅動版本：</value>
+  </data>
+  <data name="NewDriverFound" xml:space="preserve">
+    <value>發現新版本驅動！</value>
+  </data>
+  <data name="LatestVersion" xml:space="preserve">
+    <value>最新版本：</value>
+  </data>
+  <data name="ReleaseDate" xml:space="preserve">
+    <value>發佈日期：</value>
+  </data>
+  <data name="SelectDriverType" xml:space="preserve">
+    <value>選擇驅動類型</value>
+  </data>
+  <data name="GameReadyDriverRecommended" xml:space="preserve">
+    <value>Game Ready Driver（建議）</value>
+  </data>
+  <data name="GameReadyDriverDescription" xml:space="preserve">
+    <value>針對最新遊戲最佳化，提供最佳遊戲體驗</value>
+  </data>
+  <data name="StudioDriverDescription" xml:space="preserve">
+    <value>針對創意應用程式最佳化，提供更穩定的工作環境</value>
+  </data>
+  <data name="DownloadProgress" xml:space="preserve">
+    <value>下載進度</value>
+  </data>
+  <data name="PauseDownload" xml:space="preserve">
+    <value>中斷下載</value>
+  </data>
+  <data name="CheckUpdate" xml:space="preserve">
+    <value>檢查更新</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>立即更新</value>
+  </data>
+  <!-- MainWindow.xaml.cs dynamic strings -->
+  <data name="GpuInfoLoaded" xml:space="preserve">
+    <value>GPU 資訊已載入</value>
+  </data>
+  <data name="NoNvidiaGpuDetected" xml:space="preserve">
+    <value>未偵測到 NVIDIA GPU</value>
+  </data>
+  <data name="DetectionFailed" xml:space="preserve">
+    <value>偵測失敗：{0}</value>
+  </data>
+  <data name="StartupCheckbox" xml:space="preserve">
+    <value>開機自動啟動</value>
+  </data>
+  <data name="CheckIntervalLabel" xml:space="preserve">
+    <value>自動檢查間隔（小時）</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>儲存</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="CheckingForUpdates" xml:space="preserve">
+    <value>正在檢查更新...</value>
+  </data>
+  <data name="NewVersionFound" xml:space="preserve">
+    <value>發現新版本驅動！</value>
+  </data>
+  <data name="AlreadyLatest" xml:space="preserve">
+    <value>目前已是最新版本</value>
+  </data>
+  <data name="CannotGetDriverInfo" xml:space="preserve">
+    <value>無法取得最新驅動資訊</value>
+  </data>
+  <data name="CheckUpdateFailed" xml:space="preserve">
+    <value>檢查更新失敗：{0}</value>
+  </data>
+  <data name="ResumeDetected" xml:space="preserve">
+    <value>偵測到已下載 {0}，準備繼續下載...</value>
+  </data>
+  <data name="DownloadingDriver" xml:space="preserve">
+    <value>正在下載驅動...</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>正在下載... {0}</value>
+  </data>
+  <data name="ServerNoResume" xml:space="preserve">
+    <value>伺服器不支援斷點續傳，已重新下載</value>
+  </data>
+  <data name="InstallingDriver" xml:space="preserve">
+    <value>正在安裝驅動...</value>
+  </data>
+  <data name="InstallComplete" xml:space="preserve">
+    <value>驅動安裝完成！建議重新啟動電腦。</value>
+  </data>
+  <data name="DownloadPaused" xml:space="preserve">
+    <value>下載已中斷，可繼續下載</value>
+  </data>
+  <data name="DownloadInterrupted" xml:space="preserve">
+    <value>下載中斷：{0}</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>更新失敗：{0}</value>
+  </data>
+  <data name="ResumeDownload" xml:space="preserve">
+    <value>繼續下載</value>
+  </data>
+  <!-- Tray Icon Menu -->
+  <data name="TrayOpenWindow" xml:space="preserve">
+    <value>開啟主視窗</value>
+  </data>
+  <data name="TrayCheckUpdate" xml:space="preserve">
+    <value>檢查更新</value>
+  </data>
+  <data name="TrayExit" xml:space="preserve">
+    <value>結束</value>
+  </data>
+  <!-- Notification Service -->
+  <data name="NotificationTitle" xml:space="preserve">
+    <value>NVIDIA 驅動更新可用</value>
+  </data>
+  <data name="NotificationNewVersion" xml:space="preserve">
+    <value>發現新版本 {0}</value>
+  </data>
+  <data name="NotificationCurrentVersion" xml:space="preserve">
+    <value>目前版本：{0}</value>
+  </data>
+  <data name="NotificationViewDetails" xml:space="preserve">
+    <value>檢視詳情</value>
+  </data>
+  <data name="NotificationRemindLater" xml:space="preserve">
+    <value>稍後提醒</value>
+  </data>
+  <!-- MainViewModel -->
+  <data name="Initializing" xml:space="preserve">
+    <value>正在初始化...</value>
+  </data>
+  <data name="DetectingGpu" xml:space="preserve">
+    <value>正在偵測 GPU...</value>
+  </data>
+  <data name="GpuDetected" xml:space="preserve">
+    <value>已偵測到 {0}</value>
+  </data>
+  <data name="GpuDetectionFailed" xml:space="preserve">
+    <value>GPU 偵測失敗</value>
+  </data>
+  <data name="NewVersionFoundWithVersion" xml:space="preserve">
+    <value>發現新版本：{0}</value>
+  </data>
+  <data name="CannotGetDriverInfoShort" xml:space="preserve">
+    <value>無法取得驅動資訊</value>
+  </data>
+  <data name="CheckUpdateFailedShort" xml:space="preserve">
+    <value>檢查更新失敗</value>
+  </data>
+  <data name="UserCancelled" xml:space="preserve">
+    <value>使用者取消了安裝</value>
+  </data>
+  <data name="UpdateFailedShort" xml:space="preserve">
+    <value>更新失敗</value>
+  </data>
+</root>
