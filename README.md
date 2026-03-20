@@ -12,12 +12,12 @@ A lightweight Windows application to check and update NVIDIA GPU drivers without
 
 ## Features
 
-- 🔍 **Automatic GPU Detection** - Detects your NVIDIA GPU via WMI
-- 📡 **Official NVIDIA API** - Uses the same API as nvidia.com/Download
-- 🎮 **Driver Type Selection** - Choose between Game Ready Driver and Studio Driver
-- 🔔 **Windows Notifications** - Get notified when updates are available
-- ⏰ **Periodic Update Checks** - Automatic background checking
-- 🎨 **Modern UI** - Built with WinUI 3 and Fluent Design
+- **Automatic GPU Detection** - Detects your NVIDIA GPU via WMI
+- **Official NVIDIA API** - Uses the same API as nvidia.com/Download
+- **Driver Type Selection** - Choose between Game Ready Driver and Studio Driver
+- **Windows Notifications** - Get notified when updates are available
+- **Periodic Update Checks** - Automatic background checking
+- **Modern UI** - Built with WinUI 3 and Fluent Design
 
 ## Requirements
 
@@ -71,23 +71,41 @@ For technical details, see [Fetch API Documentation](docs/fetch.md).
 
 ```
 NvwUpd/
-├── Core/                   # Core business logic
-│   ├── GpuDetector.cs     # GPU detection via WMI
-│   ├── DriverFetcher.cs   # NVIDIA API integration
-│   ├── DriverDownloader.cs # Download with progress
-│   ├── DriverInstaller.cs # Silent installation
-│   └── Interfaces.cs      # Core interfaces
-├── Services/              # Background services
-│   ├── IServices.cs       # Service interfaces
-│   ├── NotificationService.cs
-│   ├── SettingsService.cs
-│   └── UpdateChecker.cs
-├── ViewModels/            # MVVM ViewModels
-├── Models/                # Data models and settings
-│   ├── AppSettings.cs
-│   └── DriverModels.cs
-└── scripts/               # Helper scripts
-	└── set-version.ps1
+├── Assets/                         # Application assets
+│   ├── nvidia.ico                  # Application icon
+│   └── nvidia.png                  # Application image
+├── Core/                           # Core business logic
+│   ├── Interfaces.cs               # Core interfaces
+│   ├── GpuDetector.cs              # GPU detection via WMI
+│   ├── DriverFetcher.cs            # NVIDIA API integration
+│   ├── DriverDownloader.cs         # Download with progress
+│   └── DriverInstaller.cs          # Silent installation
+├── Models/                         # Data models and settings
+│   ├── AppSettings.cs              # Application settings
+│   └── DriverModels.cs             # Driver data models
+├── Services/                       # Application services
+│   ├── IServices.cs                # Service interfaces
+│   ├── LocalizationService.cs      # Localization support
+│   ├── NotificationService.cs      # Windows notifications
+│   ├── SettingsService.cs          # Settings management
+│   ├── StartupService.cs           # Windows startup management
+│   ├── TrayIconManager.cs          # System tray icon
+│   └── UpdateChecker.cs            # Periodic update checking
+├── Strings/                        # Localization resources
+│   ├── de/Resources.resw           # German
+│   ├── en/Resources.resw           # English
+│   ├── ja/Resources.resw           # Japanese
+│   ├── zh-CN/Resources.resw        # Simplified Chinese
+│   └── zh-TW/Resources.resw        # Traditional Chinese
+├── ViewModels/                     # MVVM ViewModels
+│   ├── ViewModelBase.cs            # Base ViewModel
+│   ├── MainViewModel.cs            # Main window ViewModel
+│   └── UpdateDialogViewModel.cs    # Update dialog ViewModel
+├── App.xaml / App.xaml.cs          # Application entry, DI setup
+├── MainWindow.xaml / .cs           # Main UI window
+└── scripts/                        # Helper scripts
+    ├── nvwupd-installer.iss        # InnoSetup installer script
+    └── set-version.ps1             # Version management script
 ```
 
 ## TODO list

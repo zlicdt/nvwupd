@@ -12,12 +12,12 @@
 
 ## 功能特性
 
-- 🔍 **自动检测 GPU** - 通过 WMI 自动检测您的 NVIDIA 显卡
-- 📡 **官方 NVIDIA API** - 使用与 nvidia.com/Download 相同的官方 API
-- 🎮 **驱动类型选择** - 可选择 Game Ready 驱动或 Studio 驱动
-- 🔔 **Windows 通知** - 有更新时发送系统通知
-- ⏰ **定期检查更新** - 后台自动检查更新
-- 🎨 **现代化界面** - 基于 WinUI 3 和 Fluent Design 构建
+- **自动检测 GPU** - 通过 WMI 自动检测您的 NVIDIA 显卡
+- **官方 NVIDIA API** - 使用与 nvidia.com/Download 相同的官方 API
+- **驱动类型选择** - 可选择 Game Ready 驱动或 Studio 驱动
+- **Windows 通知** - 有更新时发送系统通知
+- **定期检查更新** - 后台自动检查更新
+- **现代化界面** - 基于 WinUI 3 和 Fluent Design 构建
 
 ## 系统要求
 
@@ -71,23 +71,41 @@ NvwUpd 使用 NVIDIA 官方下载 API 获取驱动信息：
 
 ```
 NvwUpd/
-├── Core/                   # 核心业务逻辑
-│   ├── GpuDetector.cs     # GPU 检测（WMI）
-│   ├── DriverFetcher.cs   # NVIDIA API 集成
-│   ├── DriverDownloader.cs # 带进度的下载
-│   ├── DriverInstaller.cs # 静默安装
-│   └── Interfaces.cs      # 核心接口定义
-├── Services/              # 后台服务
-│   ├── IServices.cs       # 服务接口定义
-│   ├── NotificationService.cs
-│   ├── SettingsService.cs
-│   └── UpdateChecker.cs
-├── ViewModels/            # MVVM 视图模型
-├── Models/                # 数据模型与配置
-│   ├── AppSettings.cs
-│   └── DriverModels.cs
-└── scripts/               # 辅助脚本
-	└── set-version.ps1
+├── Assets/                         # 应用程序资源
+│   ├── nvidia.ico                  # 应用程序图标
+│   └── nvidia.png                  # 应用程序图片
+├── Core/                           # 核心业务逻辑
+│   ├── Interfaces.cs               # 核心接口定义
+│   ├── GpuDetector.cs              # GPU 检测（WMI）
+│   ├── DriverFetcher.cs            # NVIDIA API 集成
+│   ├── DriverDownloader.cs         # 带进度的下载
+│   └── DriverInstaller.cs          # 静默安装
+├── Models/                         # 数据模型与配置
+│   ├── AppSettings.cs              # 应用程序设置
+│   └── DriverModels.cs             # 驱动数据模型
+├── Services/                       # 应用程序服务
+│   ├── IServices.cs                # 服务接口定义
+│   ├── LocalizationService.cs      # 本地化支持
+│   ├── NotificationService.cs      # Windows 通知
+│   ├── SettingsService.cs          # 设置管理
+│   ├── StartupService.cs           # Windows 开机启动管理
+│   ├── TrayIconManager.cs          # 系统托盘图标
+│   └── UpdateChecker.cs            # 定期更新检查
+├── Strings/                        # 本地化资源
+│   ├── de/Resources.resw           # 德语
+│   ├── en/Resources.resw           # 英语
+│   ├── ja/Resources.resw           # 日语
+│   ├── zh-CN/Resources.resw        # 简体中文
+│   └── zh-TW/Resources.resw        # 繁体中文
+├── ViewModels/                     # MVVM 视图模型
+│   ├── ViewModelBase.cs            # ViewModel 基类
+│   ├── MainViewModel.cs            # 主窗口 ViewModel
+│   └── UpdateDialogViewModel.cs    # 更新对话框 ViewModel
+├── App.xaml / App.xaml.cs          # 应用入口，DI 配置
+├── MainWindow.xaml / .cs           # 主 UI 窗口
+└── scripts/                        # 辅助脚本
+    ├── nvwupd-installer.iss        # InnoSetup 安装程序脚本
+    └── set-version.ps1             # 版本管理脚本
 ```
 
 ## 贡献
