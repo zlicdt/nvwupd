@@ -30,8 +30,8 @@ A lightweight Windows application to check and update NVIDIA GPU drivers without
 ### From Release
 
 1. Download the latest release from [Releases](https://github.com/zlicdt/nvwupd/releases)
-2. Extract the archive
-3. Run `NvwUpd.exe`
+2. Download setup file
+3. Run setup(or use portable version)
 
 ### Build from Source
 
