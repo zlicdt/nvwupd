@@ -30,8 +30,8 @@
 ### 从 Release 安装
 
 1. 从 [Releases](https://github.com/zlicdt/nvwupd/releases) 下载最新版本
-2. 解压压缩包
-3. 运行 `NvwUpd.exe`
+2. 下载 Setup
+3. 运行 Setup（或直接运行portable版）
 
 ### 从源码构建
 
@@ -43,8 +43,6 @@ cd nvwupd
 # 构建项目
 dotnet build NvwUpd.csproj -c Release -p:Platform=x64
 
-# 运行应用
-.\bin\x64\Release\net8.0-windows10.0.22621.0\NvwUpd.exe
 ```
 
 ## 使用方法

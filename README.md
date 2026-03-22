@@ -43,8 +43,6 @@ cd nvwupd
 # Build the project
 dotnet build NvwUpd.csproj -c Release -p:Platform=x64
 
-# Run the application
-.\bin\x64\Release\net8.0-windows10.0.22621.0\NvwUpd.exe
 ```
 
 ## Usage
