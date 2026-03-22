@@ -6,7 +6,7 @@
 
 **[中文](docs/README-zh_CN.md)** / English
 
-A lightweight Windows application to check and update NVIDIA GPU drivers without requiring GeForce Experience.
+A lightweight Windows application to check and update NVIDIA GPU drivers without installing NVIDIA App.
 
 ![Screenshot](docs/screenshot.png)
 
