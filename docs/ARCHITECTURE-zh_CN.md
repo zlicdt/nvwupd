@@ -15,7 +15,7 @@
 
 ## 项目概述
 
-NvwUpd 是一个 Windows 桌面应用程序，允许用户在不需要 GeForce Experience 的情况下检查和更新 NVIDIA GPU 驱动程序。它使用 NVIDIA 官方公开 API 获取驱动程序信息。
+NvwUpd 是一个 Windows 桌面应用程序，允许用户在不需要 NVIDIA App 的情况下检查和更新 NVIDIA GPU 驱动程序。它使用 NVIDIA 官方公开 API 获取驱动程序信息。
 
 ### 主要功能
 - 通过 WMI 自动检测 GPU

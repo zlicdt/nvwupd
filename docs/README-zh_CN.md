@@ -6,7 +6,7 @@
 
 中文 / **[English](../README.md)**
 
-一个轻量级的 Windows 应用程序，用于检查和更新 NVIDIA GPU 驱动，无需安装 GeForce Experience。
+一个轻量级的 Windows 应用程序，用于检查和更新 NVIDIA GPU 驱动，无需安装 NVIDIA App。
 
 ![截图](screenshot.png)
 

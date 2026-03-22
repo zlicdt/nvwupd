@@ -15,7 +15,7 @@ This document provides a comprehensive overview of the NvwUpd project architectu
 
 ## Project Overview
 
-NvwUpd is a Windows desktop application that allows users to check and update NVIDIA GPU drivers without requiring GeForce Experience. It uses NVIDIA's official public APIs to fetch driver information.
+NvwUpd is a Windows desktop application that allows users to check and update NVIDIA GPU drivers without installing NVIDIA App. It uses NVIDIA's official public APIs to fetch driver information.
 
 ### Key Features
 - Automatic GPU detection via WMI
